@@ -1,16 +1,21 @@
 .screen {
-  display: flex;
-  justify-content: center;
-  margin: 56px auto;
-  padding: 0px 16px;
+  display: grid;
+  place-items: center;
+  min-height: 100vh;
+  padding: 0 16px;
+  overflow: auto;
+  margin: 0 auto;
+  box-sizing: border-box;
 }
+
 .wrapper {
+  width: min(90vw, 400px);
+  padding: 48px 16px;
+  box-sizing: border-box;
+  background-color: #FAF3E0;
   border-radius: 32px;
-  padding: 48px 32px;
-  width: 362px;
-  height: 711px;
-  background-color: #fdede7;
 }
+
 .title {
   font-weight: 600;
   font-size: 32px;
@@ -18,6 +23,7 @@
   color: black;
   margin-bottom: 20px;
 }
+
 .text {
   font-weight: 400;
   font-size: 16px;
@@ -26,14 +32,13 @@
   color: black;
   margin-bottom: 20px;
 }
+
 .form {
   display: flex;
   flex-direction: column;
-  max-width: 298px;
-  height: 391px;
-  margin-bottom: 20px;
   width: 100%;
 }
+
 .label {
   display: flex;
   flex-direction: column;
@@ -41,53 +46,71 @@
   font-weight: 400;
   font-size: 12px;
   color: black;
+  width: 100%;
+  margin-bottom: 16px; /* Встановлено відступ між інпутами та наступним лейблом */
 }
+
 .field {
   border: 1.5px solid #d3d3d3;
   border-radius: 8px;
   padding: 8px;
-  width: 298px;
+  width: 100%;
   height: 41px;
   background-color: white;
-  margin-bottom: 16px;
+  margin-bottom: 0; /* Потрібно прибрати додатковий відступ між інпутом і помилкою */
   transition: border 0.2s ease, box-shadow 0.2s ease;
   box-sizing: border-box;
+  padding-right: 40px;
 }
+
 .field::placeholder {
   font-weight: 400;
   font-size: 16px;
   line-height: 155%;
-  color: #bdbdbd;
+  color: #9F9F9F;
   transition: color 0.2s ease;
 }
+
 .field:focus::placeholder {
   color: black;
 }
+
 .field:focus {
   border: 1.5px solid #d3d3d3;
   outline: none;
   box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.25);
+  background-color: white;
 }
 
 .errorField {
-  border: red;
+  border: 1.5px solid red; /* Червона обводка, коли є помилка */
 }
+
 .errorMessage {
   color: red;
   font-size: 12px;
   margin-top: 4px;
+  line-height: 1.2;
+  min-height: 18px; /* Мінімальна висота для місця під помилкою */
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  display: block;
+}
+
+.errorMessage.visible {
+  opacity: 1;
 }
 
 .labelCheckbox {
   display: flex;
   align-items: flex-start;
-  gap: 8px;
+  gap: 12px;
   flex-wrap: nowrap;
   margin-bottom: 27px;
 }
 
 .checkbox {
-  border: 1.5px solid gray;
+  border: 1.5px solid #595D62;
   border-radius: 4px;
   width: 16px;
   height: 16px;
@@ -106,19 +129,14 @@
   white-space: nowrap;
 }
 
-.errorMessage {
-  color: red;
-  font-size: 12px;
-  margin-top: 4px;
-}
 .button {
-  background: #d2b48c;
+  background-color: #9B6C43;
   font-weight: 600;
   font-size: 16px;
   color: white;
   border-radius: 8px;
   padding: 8px 16px;
-  width: 298px;
+  width: 100%;
   box-sizing: border-box;
   cursor: pointer;
   display: flex;
@@ -126,6 +144,16 @@
   justify-content: center;
   margin-bottom: 20px;
 }
+
+.button:hover {
+  background-color: #6D554B;
+}
+
+.button:focus {
+  box-shadow: 0 0 0 6px rgba(78, 70, 180, 0.12), 0 0 0 2px white;
+  background-color: #9B6C43;
+}
+
 .bottomText {
   font-weight: 400;
   font-size: 16px;
@@ -133,6 +161,7 @@
   text-align: center;
   color: black;
 }
+
 .bottomText a {
   font-weight: 600;
   text-decoration: underline;
@@ -140,17 +169,18 @@
   cursor: pointer;
   transition: color 0.3s ease;
 }
+
 .passwordFieldWrapper {
   position: relative;
+  width: 100%;
   display: flex;
   align-items: center;
+  justify-content: space-between;
 }
 
 .eyeToggleBtn {
   position: absolute;
-  right: 10px;
-  top: 50%;
-  transform: translateY(-50%);
+  right: 8px;
   background: transparent;
   border: none;
   cursor: pointer;
@@ -158,6 +188,28 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 24px;
-  height: 24px;
+  height: 100%;
+  top: 0;
+}
+
+.eyeIcon {
+  width: 16px;
+  height: 14px;
+  cursor: pointer;
+  user-select: none;
+  stroke-width: 1px;
+  stroke: black;
+}
+
+@media only screen and (min-width: 768px) {
+  .screen {
+    padding: 0 32px;
+  }
+
+  .wrapper {
+    padding: 48px 32px;
+  }
+}
+
+@media only screen and (min-width: 1440px) {
 }

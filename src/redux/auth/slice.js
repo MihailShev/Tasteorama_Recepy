@@ -13,32 +13,35 @@ const authSlice = createSlice({
     error: null,
     isLoading: false,
   },
+  reducers: {
+    clearAuthError(state) {
+      state.error = null;
+    },
+  },
   extraReducers: (builder) =>
     builder
-
       .addCase(register.pending, (state) => {
         state.isLoading = true;
         state.error = null;
       })
-
       .addCase(register.fulfilled, (state, action) => {
-        state.user = action.payload.user;
-        state.token = action.payload.token;
+        state.user = action.payload.user || { name: null, email: null };
+        state.token = action.payload.token || null;
         state.isLoggedIn = true;
         state.isLoading = false;
         state.error = null;
       })
-
       .addCase(register.rejected, (state, action) => {
-        state.error = action.payload || action.error.message;
+        state.error =
+          action.payload?.message ||
+          action.error?.message ||
+          "Something went wrong";
         state.isLoading = false;
       })
-
       .addCase(logIn.pending, (state) => {
         state.isLoading = true;
         state.error = null;
       })
-
       .addCase(logIn.fulfilled, (state, action) => {
         state.user = action.payload.user;
         state.token = action.payload.token;
@@ -46,12 +49,10 @@ const authSlice = createSlice({
         state.isLoading = false;
         state.error = null;
       })
-
       .addCase(logIn.rejected, (state, action) => {
         state.error = action.payload || action.error.message;
         state.isLoading = false;
       })
-
       .addCase(logOut.pending, (state) => {
         state.isLoading = true;
         state.error = null;
@@ -67,5 +68,7 @@ const authSlice = createSlice({
         state.isLoading = false;
       }),
 });
+
+export const { clearAuthError } = authSlice.actions;
 
 export default authSlice.reducer;
