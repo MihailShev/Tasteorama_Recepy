@@ -30,6 +30,14 @@ const RegisterSchema = Yup.object({
     .required("Required"),
 });
 
+const initialValues = {
+  name: "",
+  email: "",
+  password: "",
+  confirmPassword: "",
+  agree: false,
+};
+
 export default function RegistrationForm() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -69,7 +77,11 @@ export default function RegistrationForm() {
 
   const handleSubmit = async (values, actions) => {
     try {
-      const resultAction = await dispatch(register(values));
+      // Видаляємо поля, які не потрібно відправляти на сервер
+      const { confirmPassword, agree, ...dataToSend } = values;
+
+      const resultAction = await dispatch(register(dataToSend));
+
       if (resultAction.type === "auth/register/fulfilled") {
         actions.resetForm();
         toast.success("Registration successful!");
@@ -93,38 +105,12 @@ export default function RegistrationForm() {
         </p>
 
         <Formik
-          initialValues={{
-            name: "",
-            email: "",
-            password: "",
-            confirmPassword: "",
-            agree: false,
-          }}
+          initialValues={initialValues}
           validationSchema={RegisterSchema}
           onSubmit={handleSubmit}
         >
           {({ errors, touched }) => (
             <Form className={css.form}>
-              <label className={css.label} htmlFor="name">
-                Enter your name
-                <Field
-                  name="name"
-                  type="text"
-                  id="name"
-                  placeholder="Max"
-                  className={`${css.field} ${
-                    errors.name && touched.name ? css.errorField : ""
-                  }`}
-                />
-                <div
-                  className={`${css.errorMessage} ${
-                    errors.name && touched.name ? css.visible : ""
-                  }`}
-                >
-                  {errors.name}
-                </div>
-              </label>
-
               <label className={css.label} htmlFor="email">
                 Enter your email address
                 <Field
@@ -142,6 +128,25 @@ export default function RegistrationForm() {
                   }`}
                 >
                   {errors.email}
+                </div>
+              </label>
+              <label className={css.label} htmlFor="name">
+                Enter your name
+                <Field
+                  name="name"
+                  type="text"
+                  id="name"
+                  placeholder="Max"
+                  className={`${css.field} ${
+                    errors.name && touched.name ? css.errorField : ""
+                  }`}
+                />
+                <div
+                  className={`${css.errorMessage} ${
+                    errors.name && touched.name ? css.visible : ""
+                  }`}
+                >
+                  {errors.name}
                 </div>
               </label>
 
