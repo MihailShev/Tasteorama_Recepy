@@ -1,3 +1,11 @@
+@import "normalize.css";
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
 html {
   scroll-behavior: smooth;
 }
@@ -8,6 +16,7 @@ body::-webkit-scrollbar {
 
 body {
   font-family: "Montserrat", sans-serif;
+  margin: 0;
 }
 
 h1,
