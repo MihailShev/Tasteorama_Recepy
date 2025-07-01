@@ -1,3 +1,3 @@
-export default function Filters() {
+export default function NotFound() {
   return <></>;
 }
