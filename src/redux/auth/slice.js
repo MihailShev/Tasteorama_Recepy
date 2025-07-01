@@ -32,11 +32,10 @@ const authSlice = createSlice({
         state.error = null;
       })
       .addCase(register.rejected, (state, action) => {
-        state.error =
-          action.payload?.message ||
-          action.error?.message ||
-          "Something went wrong";
-        state.isLoading = false;
+        state.error = action.payload || 
+        action.error?.message || 
+          "Something went wrong"; 
+        state.isLoading = false; 
       })
       .addCase(logIn.pending, (state) => {
         state.isLoading = true;

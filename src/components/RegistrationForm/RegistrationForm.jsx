@@ -1,14 +1,11 @@
-import { useEffect, useState } from "react";
+import { useState, useEffect } from "react";
 import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, Link } from "react-router-dom";
 import { register } from "../../redux/auth/operations";
-import { clearAuthError } from "../../redux/auth/slice";
 import { toast } from "react-toastify";
 import css from "./RegistrationForm.module.css";
-import eyeOn from "../../../public/img/svg/eye-on.svg";
-import eyeOff from "../../../public/img/svg/eye-off.svg";
 
 const RegisterSchema = Yup.object({
   name: Yup.string()
@@ -30,24 +27,14 @@ const RegisterSchema = Yup.object({
     .required("Required"),
 });
 
-const initialValues = {
-  name: "",
-  email: "",
-  password: "",
-  confirmPassword: "",
-  agree: false,
-};
-
 export default function RegistrationForm() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
-  const error = useSelector((state) => state.auth.error);
-  const isLoading = useSelector((state) => state.auth.isLoading);
+  const { error, isLoading } = useSelector((state) => state.auth);
 
-  const [showPassword, setShowPassword] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [showPassword, setShowPassword] = useState(false); 
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false); 
 
   useEffect(() => {
     if (error) {
@@ -58,43 +45,25 @@ export default function RegistrationForm() {
       });
     }
   }, [error]);
-
-  useEffect(() => {
-    if (isLoggedIn) {
-      toast.success("Registration successful! You are now logged in.", {
-        position: "top-right",
-        autoClose: 3000,
-      });
-      navigate("/");
-    }
-  }, [isLoggedIn, navigate]);
-
-  useEffect(() => {
-    return () => {
-      dispatch(clearAuthError());
-    };
-  }, [dispatch]);
-
+  const initialValues = {
+    name: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+    agree: false,
+  };
   const handleSubmit = async (values, actions) => {
+    const { name, email, password } = values;
     try {
-      // Видаляємо поля, які не потрібно відправляти на сервер
-      const { confirmPassword, agree, ...dataToSend } = values;
-
-      const resultAction = await dispatch(register(dataToSend));
-
-      if (resultAction.type === "auth/register/fulfilled") {
-        actions.resetForm();
-        toast.success("Registration successful!");
-        navigate("/");
-      } else {
-        toast.error("Registration failed.");
-      }
+      await dispatch(register({ name, email, password })).unwrap();
+      actions.resetForm();
+      toast.success(`Welcome aboard, ${name}! We're excited to have you with us!`);
+      navigate("/");
     } catch (error) {
       console.error(error);
-      toast.error("An error occurred during registration.");
+      toast.error("Registration failed.");
     }
   };
-
   return (
     <div className={css.screen}>
       <div className={css.wrapper}>
@@ -103,7 +72,6 @@ export default function RegistrationForm() {
           Join our community of culinary enthusiasts, save your favorite
           recipes, and share your cooking creations.
         </p>
-
         <Formik
           initialValues={initialValues}
           validationSchema={RegisterSchema}
@@ -149,7 +117,6 @@ export default function RegistrationForm() {
                   {errors.name}
                 </div>
               </label>
-
               <label className={css.label} htmlFor="password">
                 Create a strong password
                 <div className={css.passwordFieldWrapper}>
@@ -167,11 +134,14 @@ export default function RegistrationForm() {
                     onClick={() => setShowPassword((prev) => !prev)}
                     className={css.eyeToggleBtn}
                   >
-                    <img
-                      src={showPassword ? eyeOn : eyeOff}
-                      alt={showPassword ? "Hide password" : "Show password"}
-                      className={css.eyeIcon}
-                    />
+                    <svg className={css.eyeIcon}>
+                      <use
+                        href={`/public/img/svg/icons.svg#${
+                          showPassword ? "icon-eye" : "icon-eye-crossed"
+                        }`}
+                        fill="none"
+                      />
+                    </svg>
                   </button>
                 </div>
                 <div
@@ -182,7 +152,6 @@ export default function RegistrationForm() {
                   {errors.password}
                 </div>
               </label>
-
               <label className={css.label} htmlFor="confirmPassword">
                 Repeat your password
                 <div className={css.passwordFieldWrapper}>
@@ -202,13 +171,14 @@ export default function RegistrationForm() {
                     onClick={() => setShowConfirmPassword((prev) => !prev)}
                     className={css.eyeToggleBtn}
                   >
-                    <img
-                      src={showConfirmPassword ? eyeOn : eyeOff}
-                      alt={
-                        showConfirmPassword ? "Hide password" : "Show password"
-                      }
-                      className={css.eyeIcon}
-                    />
+                    <svg className={css.eyeIcon}>
+                      <use
+                        href={`/public/img/svg/icons.svg#${
+                          showConfirmPassword ? "icon-eye" : "icon-eye-crossed"
+                        }`}
+                        fill="none"
+                      />
+                    </svg>
                   </button>
                 </div>
                 <div
@@ -221,7 +191,6 @@ export default function RegistrationForm() {
                   {errors.confirmPassword}
                 </div>
               </label>
-
               <Field name="agree">
                 {({ field, meta }) => (
                   <label className={css.labelCheckbox}>
@@ -249,16 +218,20 @@ export default function RegistrationForm() {
                       </a>
                     </span>
                     {meta.touched && meta.error && (
-                      <div className={css.errorMessage}>{meta.error}</div>
+                      <div
+                        className={`${css.errorMessage} ${
+                          meta.touched && meta.error ? css.visible : ""
+                        }`}
+                      >
+                        {meta.error}
+                      </div>
                     )}
                   </label>
                 )}
               </Field>
-
               <button className={css.button} type="submit" disabled={isLoading}>
                 {isLoading ? "Registering..." : "Create account"}
               </button>
-
               <p className={css.bottomText}>
                 Already have an account? <Link to="/auth/login">Log in</Link>
               </p>

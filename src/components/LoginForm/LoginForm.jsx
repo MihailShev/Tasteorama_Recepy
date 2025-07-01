@@ -3,14 +3,11 @@ import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, Link } from "react-router-dom";
-import { logIn } from "../../redux/auth/operations"; // Асинхронна операція
+import { logIn } from "../../redux/auth/operations";
 import { clearAuthError } from "../../redux/auth/slice.js";
 import { toast } from "react-toastify";
 import css from "./LoginForm.module.css";
-import eyeOn from "../../../public/img/svg/eye-on.svg";
-import eyeOff from "../../../public/img/svg/eye-off.svg";
 
-// Валідація форми
 const LoginSchema = Yup.object({
   email: Yup.string()
     .email("Please enter a valid email address")
@@ -26,13 +23,10 @@ export default function LoginForm() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
-  const error = useSelector((state) => state.auth.error);
-  const isLoading = useSelector((state) => state.auth.isLoading);
+  const { error, isLoading, isLoggedIn } = useSelector((state) => state.auth);
 
   const [showPassword, setShowPassword] = useState(false);
 
-  // Обробка помилок при вході
   useEffect(() => {
     if (error) {
       toast.error(`Login failed: ${error}`, {
@@ -43,39 +37,29 @@ export default function LoginForm() {
     }
   }, [error]);
 
-  // Перехід на головну сторінку після успішного входу
   useEffect(() => {
     if (isLoggedIn) {
       toast.success("You have successfully logged in!", {
         position: "top-right",
         autoClose: 3000,
       });
-      navigate("/"); // Перехід на головну
+      navigate("/"); // Перехід на головну сторінку після успішного входу
     }
   }, [isLoggedIn, navigate]);
 
-  // Очистка помилок при розмонтажі компонента
   useEffect(() => {
     return () => {
-      dispatch(clearAuthError());
+      dispatch(clearAuthError()); 
     };
   }, [dispatch]);
 
-  // Обробка відправлення форми
   const handleSubmit = async (values, actions) => {
     try {
-      // Викликаємо асинхронну операцію логіну
-      const resultAction = await dispatch(logIn(values));
-
-      // Якщо операція виконана успішно
-      if (logIn.fulfilled.match(resultAction)) {
-        actions.resetForm(); // Очищуємо форму
-      } else {
-        // Якщо сталася помилка
-        toast.error("Login failed.");
-      }
-    } catch (error) {
-      toast.error("An error occurred during login.");
+      await dispatch(logIn(values)).unwrap();
+      actions.resetForm();
+      toast.success("Login successful!");
+    } catch {
+      toast.error("Login failed.");
     }
   };
 
@@ -136,13 +120,14 @@ export default function LoginForm() {
                             showPassword ? "Hide password" : "Show password"
                           }
                         >
-                          <img
-                            src={showPassword ? eyeOn : eyeOff}
-                            alt={
-                              showPassword ? "Hide password" : "Show password"
-                            }
-                            className={css.eyeIcon}
-                          />
+                          <svg className={css.eyeIcon}>
+                            <use
+                              href={`/public/img/svg/icons.svg#${
+                                showPassword ? "icon-eye" : "icon-eye-crossed"
+                              }`}
+                              fill="none"
+                            />
+                          </svg>
                         </button>
                       </div>
                       <div className={css.errorMessage}>
@@ -158,7 +143,8 @@ export default function LoginForm() {
               </button>
 
               <p className={css.bottomText}>
-                Don't have an account? <Link to="/auth/register">Register</Link>
+                Don&apos;t have an account?{" "}
+                <Link to="/auth/register">Register</Link>
               </p>
             </Form>
           )}

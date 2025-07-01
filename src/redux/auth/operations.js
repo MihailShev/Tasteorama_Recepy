@@ -21,10 +21,11 @@ export const register = createAsyncThunk(
     try {
       const response = await axiosInstance.post(
         "/api/auth/register", credentials);
-      setAuthHeader(response.data.data.accessToken);
+      const { name, email, accessToken } = response.data.data;
+      setAuthHeader(accessToken);
       return {
-        user: response.data.data,
-        accessToken: response.data.data.accessToken,
+        user: { name, email }, 
+        token: accessToken, 
       };
     } catch (error) {
       const message =
@@ -39,11 +40,13 @@ export const logIn = createAsyncThunk(
   async (credentials, thunkAPI) => {
     try {
       const response = await axiosInstance.post("/api/auth/login", credentials);
-      setAuthHeader(response.data.token);
-      localStorage.setItem("accessToken", response.data.token); 
+      const { name, email, accessToken } = response.data.data;
+      setAuthHeader(accessToken);
+      localStorage.setItem("accessToken", accessToken);
+
       return {
-        user: response.data,
-        token: response.data.token,
+        user: { name, email },
+        token: accessToken,
       };
     } catch (error) {
       const message =
