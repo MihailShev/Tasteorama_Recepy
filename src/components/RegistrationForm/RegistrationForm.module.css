@@ -1,16 +1,19 @@
 .screen {
-  display: grid;
-  place-items: center;
+  display: flex;
+  justify-content: center;  
+  align-items: center;
   min-height: 100vh;
   padding: 0 16px;
-  overflow: auto;
+  overflow: hidden;
   margin: 0 auto;
 }
 .wrapper {
-  width: min(90vw, 400px);
-  padding: 48px 32px;
-  background-color: #FAF3E0;
   border-radius: 32px;
+  padding: 48px 32px;
+  max-width: 522px; 
+  min-width: 362px;
+  width: 100%;
+  background-color: #FAF3E0;
 }
 .title {
   font-weight: 600;
@@ -99,14 +102,16 @@
 .labelCheckbox {
   display: flex; 
   flex-wrap: wrap;
-  height: 40px; 
+  width: 325px;
+  height: 40px;
+  box-sizing: border-box; 
 }
 .checkbox {
-  border: 1.5px solid #595D62;
+  border: 1px solid #595D62;
   border-radius: 4px;
-  width: 16px;
-  height: 16px;
-  margin-right: 12px;
+  width: 14px;
+  height: 14px;
+  margin-right: 8px;
 }
 .textWrapper {
   display: flex;
@@ -142,22 +147,20 @@
   margin-bottom: 20px;
   margin-top: 10px;
 }
-
 .button:hover {
   background-color: #6D554B;
 }
-
 .button:focus {
   box-shadow: 0 0 0 6px rgba(78, 70, 180, 0.12), 0 0 0 2px white;
   background-color: #9B6C43;
 }
-
 .bottomText {
   font-weight: 400;
   font-size: 16px;
   line-height: 155%;
   text-align: center;
   color: black;
+  
 }
 .bottomText a {
   font-weight: 600;
@@ -200,5 +203,7 @@
   }
   .wrapper {
     padding: 48px 32px;
+   
   }
+
 }

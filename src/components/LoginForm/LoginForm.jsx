@@ -62,7 +62,6 @@ export default function LoginForm() {
       toast.error("Login failed.");
     }
   };
-
   return (
     <div className={css.screen}>
       <div className={css.wrapper}>
@@ -73,7 +72,6 @@ export default function LoginForm() {
           validationSchema={LoginSchema}
           onSubmit={handleSubmit}
         >
-          {({ resetForm }) => (
             <Form className={css.form}>
               <label className={css.label} htmlFor="email">
                 Enter your email address
@@ -147,7 +145,6 @@ export default function LoginForm() {
                 <Link to="/auth/register">Register</Link>
               </p>
             </Form>
-          )}
         </Formik>
       </div>
     </div>
