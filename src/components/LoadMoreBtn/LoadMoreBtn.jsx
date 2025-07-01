@@ -1,4 +1,4 @@
-import styles from './LoadMoreBtn.module.css';
+import styles from "./LoadMoreBtn.module.css";
 
 export default function LoadMoreBtn({ load }) {
   return (
