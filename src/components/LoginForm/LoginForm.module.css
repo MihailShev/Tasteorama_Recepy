@@ -1,22 +1,19 @@
 .screen {
-  display: grid;
-  place-items: center;
+  display: flex;
+  justify-content: center;  
+  align-items: center; 
   min-height: 100vh;
   padding: 0 16px;
   overflow: auto;
   margin: 0 auto;
-  box-sizing: border-box;
 }
-
 .wrapper {
   border-radius: 32px;
   padding: 48px 32px;
   max-width: 362px;
   width: 100%;
-  box-sizing: border-box;
   background-color: #FAF3E0;
 }
-
 .title {
   font-weight: 600;
   font-size: 32px;
@@ -24,14 +21,11 @@
   color: black;
   margin-bottom: 20px;
 }
-
 .form {
   display: flex;
   flex-direction: column;
   width: 100%;
-  margin-bottom: 20px;
 }
-
 .label {
   display: flex;
   flex-direction: column;
@@ -39,18 +33,14 @@
   font-weight: 400;
   font-size: 12px;
   color: black;
-  margin-bottom: 20px; 
+  width: 100%;
 }
-
-
 .passwordFieldWrapper {
   position: relative;
   width: 100%;
   display: flex;
   align-items: center;
 }
-
-
 .field {
   border: 1.5px solid #d3d3d3;
   border-radius: 8px;
@@ -60,10 +50,15 @@
   background-color: white;
   margin-bottom: 0;
   transition: border 0.2s ease, box-shadow 0.2s ease;
-  box-sizing: border-box;
   padding-right: 40px; 
+  color: black; 
+  font-size: 16px;
 }
-
+.field:-webkit-autofill {
+  background-color: white; 
+  color: black; 
+  transition: background-color 5000s ease-in-out 0s; 
+}
 .field::placeholder {
   font-weight: 400;
   font-size: 16px;
@@ -71,18 +66,18 @@
   color: #9F9F9F;
   transition: color 0.2s ease;
 }
-
 .field:focus::placeholder {
   color: black;
 }
-
 .field:focus {
   border: 1.5px solid #d3d3d3;
   outline: none;
-  box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.25);
+  box-shadow: 0 0 0 4px rgba(78, 70, 180, 0.2);
   background-color: white;
 }
-
+.errorField {
+  border: 1.5px solid red; 
+}
 .eyeToggleBtn {
   position: absolute;
   right: 8px;
@@ -96,7 +91,6 @@
   height: 100%;
   top: 0;
 }
-
 .eyeIcon {
   width: 16px;
   height: 14px;
@@ -105,51 +99,43 @@
   stroke-width: 1px;
   stroke: black;
 }
-
 .errorMessage {
-  min-height: 16px; 
+  min-height: 17px; 
   color: red;
   font-size: 12px;
   margin-top: 4px;
   line-height: 1.2;
 }
-
 .button {
+  background-color: #9B6C43;
+  font-weight: 600;
+  font-size: 16px;
+  color: white;
   border-radius: 8px;
   padding: 8px;
-  width: 298px;
+  width: 100%;
   height: 36px;
-  background-color: #9B6C43;
-  box-sizing: border-box;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: 20px auto 0 auto;
-  font-weight: 600;
-  font-size: 16px;
-  color: white;
-  border: none;
+  margin-bottom: 20px;
+  margin-top: 10px;
 }
-
 .button:hover {
   background-color: #6D554B;
 }
-
 .button:focus {
   box-shadow: 0 0 0 6px rgba(78, 70, 180, 0.12), 0 0 0 2px white;
   background-color: #9B6C43;
 }
-
 .bottomText {
   font-weight: 400;
   font-size: 16px;
   line-height: 155%;
   text-align: center;
   color: black;
-  margin-top: 20px;
 }
-
 .bottomText a {
   font-weight: 600;
   text-decoration: underline;
@@ -157,7 +143,6 @@
   cursor: pointer;
   transition: color 0.3s ease;
 }
-
 @media only screen and (min-width: 768px) {
   .screen {
     padding: 0 32px;
@@ -167,6 +152,3 @@
   }
 }
 
-@media only screen and (min-width: 1440px) {
-  
-}

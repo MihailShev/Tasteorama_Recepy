@@ -43,7 +43,7 @@ export default function LoginForm() {
         position: "top-right",
         autoClose: 3000,
       });
-      navigate("/"); // Перехід на головну сторінку після успішного входу
+      navigate("/"); 
     }
   }, [isLoggedIn, navigate]);
 
@@ -98,7 +98,7 @@ export default function LoginForm() {
               </label>
 
               <label className={css.label} htmlFor="password">
-                Enter your password
+                Create a strong password
                 <Field name="password">
                   {({ field, meta }) => (
                     <>
