@@ -5,7 +5,6 @@ export default function RecipeViewPage() {
   return (
     <>
       <NotFound />
-
       <RecipeDetails />
     </>
   );
