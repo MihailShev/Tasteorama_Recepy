@@ -10,7 +10,8 @@
 .wrapper {
   border-radius: 32px;
   padding: 48px 32px;
-  max-width: 362px;
+  max-width: 522px; 
+  min-width: 362px;
   width: 100%;
   background-color: #FAF3E0;
 }
