@@ -16,14 +16,12 @@ function App() {
     <Suspense fallback={null}>
       <Routes>
         <Route path="/" element={<Layout />}>
-          {/* общие */}
           <Route index element={<MainPage />} />
 
           <Route path="recipes/:id" element={<RecipeViewPage />} />
 
           <Route path="auth/:authType" element={<AuthPage />} />
 
-          {/* юзер */}
           <Route
             path="add-recipe"
             element={
@@ -42,7 +40,6 @@ function App() {
             }
           />
 
-          {/* пу-пу-пуууу */}
           <Route path="*" element={<NotFound />} />
         </Route>
       </Routes>
