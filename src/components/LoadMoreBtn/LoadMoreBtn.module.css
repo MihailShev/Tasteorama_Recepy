@@ -1,0 +1,25 @@
+.loadMore {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 600;
+  font-size: 18px;
+  width: 100%;
+  color: #fff;
+  border-radius: 8px;
+  padding: 16px;
+  background-color: #9b6c43;
+}
+
+@media only screen and (min-width: 768px) {
+  .loadMore {
+    display: flex;
+    justify-content: center;
+    margin: 0 auto;
+    max-width: 338px;
+  }
+}
+
+@media only screen and (min-width: 1440px) {
+  .loadMore {
+    max-width: 289px;
+  }
+}
