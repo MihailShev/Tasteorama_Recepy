@@ -1,9 +1,10 @@
-import LoadMoreBtn from "../../components/LoadMoreBtn/LoadMoreBtn.jsx";
-import ProfileNavigation from "../../components/ProfileNavigation/ProfileNavigation.jsx";
-import RecipeCard from "../../components/RecipeCard/RecipeCard.jsx";
-import RecipesList from "../../components/RecipesList/RecipesList.jsx";
+import LoadMoreBtn from '../../components/LoadMoreBtn/LoadMoreBtn.jsx';
+import ProfileNavigation from '../../components/ProfileNavigation/ProfileNavigation.jsx';
+import RecipeCard from '../../components/RecipeCard/RecipeCard.jsx';
+import RecipesList from '../../components/RecipesList/RecipesList.jsx';
 
 export default function ProfilePage() {
+  const loadMore = () => {};
   return (
     <>
       <ProfileNavigation />
@@ -12,7 +13,7 @@ export default function ProfilePage() {
 
       <RecipeCard />
 
-      <LoadMoreBtn />
+      <LoadMoreBtn load={loadMore} />
     </>
   );
 }
