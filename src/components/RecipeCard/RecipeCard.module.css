@@ -1,0 +1,62 @@
+.div {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 12px;
+  border-radius: 16px;
+  background-color: #faf3e0;
+  height: 100%;
+}
+
+.img {
+  width: 100%;
+  height: 230px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-bottom: 16px;
+}
+
+.wrap {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.name {
+  font-weight: 700;
+  font-size: 24px;
+}
+
+.time {
+  display: flex;
+  background-color: #ffffff;
+  padding: 5px;
+  border-radius: 8px;
+  gap: 5px;
+}
+
+.desc {
+  line-height: 1.55;
+  margin-bottom: 8px;
+}
+
+.cl {
+  line-height: 1.55;
+  margin-bottom: 16px;
+}
+
+.btn {
+  font-family: "Montserrat", sans-serif;
+  font-weight: 600;
+  font-size: 16px;
+  border: 1px solid;
+  border-radius: 8px;
+  width: 100%;
+  padding: 10px 0;
+}
+
+@media only screen and (min-width: 768px) {
+  .div {
+    height: 100%;
+  }
+}

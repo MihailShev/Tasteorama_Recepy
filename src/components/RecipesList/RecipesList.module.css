@@ -1,0 +1,28 @@
+.total {
+  font-weight: 600;
+  font-size: 18px;
+  margin-bottom: 20px;
+}
+
+.list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  justify-content: center;
+  margin-bottom: 24px;
+}
+
+@media screen and (min-width: 768px) {
+  .li {
+    width: calc((100% - 24px) / 2);
+  }
+}
+
+@media screen and (min-width: 1280px) {
+  .li {
+    width: calc((100% - 72px) / 4);
+  }
+}

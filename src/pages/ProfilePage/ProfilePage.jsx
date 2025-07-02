@@ -1,19 +1,24 @@
-import LoadMoreBtn from "../../components/LoadMoreBtn/LoadMoreBtn.jsx";
+import { useParams, Navigate } from "react-router";
 import ProfileNavigation from "../../components/ProfileNavigation/ProfileNavigation.jsx";
-import RecipeCard from "../../components/RecipeCard/RecipeCard.jsx";
-import RecipesList from "../../components/RecipesList/RecipesList.jsx";
+import OwnRecipes from "../../components/Profile/OwnRecipes/OwnRecipes.jsx";
+import SavedRecipes from "../../components/Profile/SavedRecipes/SavedRecipes";
 
 export default function ProfilePage() {
-  const loadMore = () => {};
+  const { recipeType } = useParams();
+
+  let content;
+  if (recipeType === "own") {
+    content = <OwnRecipes />;
+  } else if (recipeType === "favorites") {
+    content = <SavedRecipes />;
+  } else {
+    return <Navigate to='/profile/own' replace />;
+  }
+
   return (
-    <>
+    <section className='container'>
       <ProfileNavigation />
-
-      <RecipesList />
-
-      <RecipeCard />
-
-      <LoadMoreBtn load={loadMore} />
-    </>
+      {content}
+    </section>
   );
 }
