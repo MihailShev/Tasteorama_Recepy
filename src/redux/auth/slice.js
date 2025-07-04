@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { register, logIn, logOut } from "./operations";
+import { register, logIn, logOut, refresh } from "./operations";
 
 const authSlice = createSlice({
   name: "auth",
@@ -12,8 +12,14 @@ const authSlice = createSlice({
     isLoggedIn: false,
     error: null,
     isLoading: false,
+    isRefreshing: false, 
   },
   reducers: {
+    setCredentials(state, action) {
+      state.user = action.payload.user;
+      state.token = action.payload.token;
+      state.isLoggedIn = true;
+    },
     clearAuthError(state) {
       state.error = null;
     },
@@ -32,10 +38,9 @@ const authSlice = createSlice({
         state.error = null;
       })
       .addCase(register.rejected, (state, action) => {
-        state.error = action.payload || 
-        action.error?.message || 
-          "Something went wrong"; 
-        state.isLoading = false; 
+        state.error =
+          action.payload || action.error?.message || "Something went wrong";
+        state.isLoading = false;
       })
       .addCase(logIn.pending, (state) => {
         state.isLoading = true;
@@ -49,7 +54,7 @@ const authSlice = createSlice({
         state.error = null;
       })
       .addCase(logIn.rejected, (state, action) => {
-        state.error = action.payload || action.error.message;
+        state.error = action.payload || action.error?.message;
         state.isLoading = false;
       })
       .addCase(logOut.pending, (state) => {
@@ -63,11 +68,23 @@ const authSlice = createSlice({
         state.isLoading = false;
       })
       .addCase(logOut.rejected, (state, action) => {
-        state.error = action.payload || action.error.message;
+        state.error = action.payload || action.error?.message;
         state.isLoading = false;
+      })
+      .addCase(refresh.pending, (state) => {
+        state.isRefreshing = true;
+      })
+      .addCase(refresh.fulfilled, (state, action) => {
+        state.user = action.payload.user;
+        state.token = action.payload.token;
+        state.isLoggedIn = true;
+        state.isRefreshing = false;
+      })
+      .addCase(refresh.rejected, (state, action) => {
+        state.error = action.payload || action.error?.message;
+        state.isRefreshing = false;
       }),
 });
 
-export const { clearAuthError } = authSlice.actions;
-
+export const { setCredentials, clearAuthError } = authSlice.actions;
 export default authSlice.reducer;

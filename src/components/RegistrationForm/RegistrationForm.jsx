@@ -33,8 +33,8 @@ export default function RegistrationForm() {
 
   const { error, isLoading } = useSelector((state) => state.auth);
 
-  const [showPassword, setShowPassword] = useState(false); 
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false); 
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   useEffect(() => {
     if (error) {
@@ -57,7 +57,9 @@ export default function RegistrationForm() {
     try {
       await dispatch(register({ name, email, password })).unwrap();
       actions.resetForm();
-      toast.success(`Welcome aboard, ${name}! We're excited to have you with us!`);
+      toast.success(
+        `Welcome aboard, ${name}! We're excited to have you with us!`
+      );
       navigate("/");
     } catch (error) {
       console.error(error);
@@ -193,30 +195,39 @@ export default function RegistrationForm() {
               </label>
               <Field name="agree">
                 {({ field, meta }) => (
-                  <label className={css.labelCheckbox}>
-                    <input
-                      {...field}
-                      type="checkbox"
-                      className={css.checkbox}
-                    />
-                    <span className={css.labelText}>
-                      I agree to the{" "}
-                      <a
-                        href="/terms"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        Terms of Service
-                      </a>{" "}
-                      and{" "}
-                      <a
-                        href="/privacy"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        Privacy Policy
-                      </a>
-                    </span>
+                  <div className={css.checkboxWrapper}>
+                    <label className={css.labelCheckbox}>
+                      <input
+                        {...field}
+                        type="checkbox"
+                        className={css.checkbox}
+                        id="agree-checkbox"
+                      />
+                      <span className={css.checkboxCustom}>
+                        <svg width="16" height="16">
+                          <use href="/public/img/svg/icons.svg#icon-Privacy-Policy" />
+                        </svg>
+                      </span>
+                      <span className={css.labelText}>
+                        I agree to the{" "}
+                        <a
+                          href="/terms"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          Terms of Service
+                        </a>{" "}
+                        and{" "}
+                        <a
+                          href="/privacy"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          Privacy Policy
+                        </a>
+                      </span>
+                    </label>
+
                     {meta.touched && meta.error && (
                       <div
                         className={`${css.errorMessage} ${
@@ -226,7 +237,7 @@ export default function RegistrationForm() {
                         {meta.error}
                       </div>
                     )}
-                  </label>
+                  </div>
                 )}
               </Field>
               <button className={css.button} type="submit" disabled={isLoading}>
