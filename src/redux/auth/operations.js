@@ -2,16 +2,17 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
 const axiosInstance = axios.create({
-  baseURL: "https://recepy-api.onrender.com", 
-  withCredentials: false, 
+  baseURL: "https://recepy-api.onrender.com",
+  withCredentials: false,
 });
 
-const setAuthHeader = (token) => {
+export const setAuthHeader = (token) => {
   if (token) {
     axiosInstance.defaults.headers.common.Authorization = `Bearer ${token}`;
   }
 };
-const clearAuthHeader = () => {
+
+export const clearAuthHeader = () => {
   delete axiosInstance.defaults.headers.common.Authorization;
 };
 
@@ -20,12 +21,16 @@ export const register = createAsyncThunk(
   async (credentials, thunkAPI) => {
     try {
       const response = await axiosInstance.post(
-        "/api/auth/register", credentials);
+        "/api/auth/register",
+        credentials
+      );
       const { name, email, accessToken } = response.data.data;
       setAuthHeader(accessToken);
+      localStorage.setItem("accessToken", accessToken);
+      localStorage.setItem("user", JSON.stringify({ name, email }));
       return {
-        user: { name, email }, 
-        token: accessToken, 
+        user: { name, email },
+        token: accessToken,
       };
     } catch (error) {
       const message =
@@ -43,7 +48,7 @@ export const logIn = createAsyncThunk(
       const { name, email, accessToken } = response.data.data;
       setAuthHeader(accessToken);
       localStorage.setItem("accessToken", accessToken);
-
+      localStorage.setItem("user", JSON.stringify({ name, email }));
       return {
         user: { name, email },
         token: accessToken,
@@ -59,8 +64,9 @@ export const logIn = createAsyncThunk(
 export const logOut = createAsyncThunk("auth/logout", async (_, thunkAPI) => {
   try {
     await axiosInstance.post("/api/auth/logout");
-    clearAuthHeader(); 
-    localStorage.removeItem("accessToken"); 
+    clearAuthHeader();
+    localStorage.removeItem("accessToken");
+    localStorage.removeItem("user"); 
   } catch (error) {
     const message =
       error.response?.data?.message || error.message || "Unknown error";
@@ -71,11 +77,13 @@ export const logOut = createAsyncThunk("auth/logout", async (_, thunkAPI) => {
 export const refresh = createAsyncThunk("auth/refresh", async (_, thunkAPI) => {
   try {
     const response = await axiosInstance.post("/api/auth/refresh");
-    setAuthHeader(response.data.token); 
-    localStorage.setItem("accessToken", response.data.token); 
+    const { token, user } = response.data;
+    setAuthHeader(token);
+    localStorage.setItem("accessToken", token);
+    localStorage.setItem("user", JSON.stringify(user));
     return {
-      user: response.data,
-      token: response.data.token,
+      user,
+      token,
     };
   } catch (error) {
     const message =
