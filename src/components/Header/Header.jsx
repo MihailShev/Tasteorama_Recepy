@@ -1,9 +1,8 @@
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { logOut } from "../../redux/auth/operations.js";
 import css from "./Header.module.css";
-import { LogOut } from "lucide-react"; 
 import logo from "/logo/vite.svg";
 
 export default function Header() {
@@ -16,54 +15,87 @@ export default function Header() {
   const handleLogout = async () => {
     await dispatch(logOut());
     navigate("/");
+    setMenuOpen(false);
   };
 
   const toggleMenu = () => setMenuOpen(!menuOpen);
+  const closeMenu = () => setMenuOpen(false);
+  const handleLinkClick = () => setMenuOpen(false);
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth >= 768) {
+        setMenuOpen(false);
+      }
+    };
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   return (
     <header className={css.header}>
       <div className={`container ${css.inner}`}>
-        <Link className={css.logo} to="/">
+        <Link className={css.logo} to="/" onClick={handleLinkClick}>
           <img src={logo} alt="Logo" />
           <span className={css.logoText}>Tasteorama</span>
         </Link>
 
         <button
-  className={css.burger}
-  onClick={toggleMenu}
-  aria-label="Toggle menu"
->
-  {menuOpen ? (
-    <span className={css.closeIcon}>&times;</span>
-  ) : (
-    <>
-      <span></span>
-      <span></span>
-      <span></span>
-    </>
-  )}
-</button>
+          className={css.burger}
+          onClick={toggleMenu}
+          aria-label="Toggle menu"
+        >
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
 
         <nav className={`${css.nav} ${menuOpen ? css.open : ""}`}>
-          <Link to="/" className={css.link}>Recipes</Link>
+          <button className={css.closeBtn} onClick={closeMenu} aria-label="Close menu">
+            <svg className={css.closeIcon} width="24" height="24">
+              <use href="/img/svg/icons.svg#icon-close-mob-menu-btn" />
+            </svg>
+          </button>
+
+          <Link to="/" className={css.link} onClick={handleLinkClick}>
+            Recipes
+          </Link>
 
           {isLoggedIn ? (
             <>
-              <Link to="/profile/own" className={css.link}>My Profile</Link>
-              <Link to="/add-recipe" className={css.addBtn}>Add Recipe</Link>
+              <Link to="/profile/own" className={css.link} onClick={handleLinkClick}>
+                My Profile
+              </Link>
+              <Link to="/add-recipe" className={css.addBtn} onClick={handleLinkClick}>
+                Add Recipe
+              </Link>
 
               <div className={css.userBlock}>
                 <div className={css.avatar}>{user.name?.[0]}</div>
                 <span className={css.userName}>{user.name}</span>
-                <button onClick={handleLogout} className={css.logoutIcon} title="Logout">
-                  <LogOut size={18} />
+                <button
+                  onClick={handleLogout}
+                  className={css.logoutIcon}
+                  title="Logout"
+                >
+                  <svg width="20" height="20">
+                    <use href="/img/svg/icons.svg#icon-logout" />
+                  </svg>
                 </button>
               </div>
             </>
           ) : (
             <>
-              <Link to="/auth/login" className={css.link}>Log in</Link>
-              <Link to="/auth/register" className={css.registerBtn}>Register</Link>
+              <Link to="/auth/login" className={css.link} onClick={handleLinkClick}>
+                Log in
+              </Link>
+              <Link
+                to="/auth/register"
+                className={css.registerBtn}
+                onClick={handleLinkClick}
+              >
+                Register
+              </Link>
             </>
           )}
         </nav>

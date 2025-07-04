@@ -49,24 +49,6 @@
     background-color: white;
 }
 
-/* Close icon (X) */
-.closeIcon {
-    font-size: 28px;
-    color: white;
-    position: absolute;
-    top: 16px;
-    right: 16px;
-    background: none;
-    border: 2px solid white;
-    border-radius: 50%;
-    width: 36px;
-    height: 36px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 102;
-}
-
 /* Navigation */
 .nav {
     display: none;
@@ -86,6 +68,29 @@
     z-index: 1000;
     align-items: center;
     justify-content: center;
+}
+
+/* Close button in mobile menu */
+.closeBtn {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: none;
+    border: 2px solid white;
+    border-radius: 50%;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 1001;
+}
+
+.closeIcon {
+    width: 20px;
+    height: 20px;
+    fill: white;
 }
 
 .link {
@@ -167,7 +172,7 @@
         font-size: 1rem;
     }
 
-    .closeIcon {
+    .closeBtn {
         display: none;
     }
 }
