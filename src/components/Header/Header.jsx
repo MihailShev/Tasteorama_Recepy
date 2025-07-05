@@ -1,59 +1,105 @@
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
 import { logOut } from "../../redux/auth/operations.js";
 import css from "./Header.module.css";
+import logo from "/logo/vite.svg";
 
 export default function Header() {
   const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
   const user = useSelector((state) => state.auth.user);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [menuOpen, setMenuOpen] = useState(false);
 
   const handleLogout = async () => {
     await dispatch(logOut());
     navigate("/");
+    setMenuOpen(false);
   };
 
+  const toggleMenu = () => setMenuOpen(!menuOpen);
+  const closeMenu = () => setMenuOpen(false);
+  const handleLinkClick = () => setMenuOpen(false);
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth >= 768) {
+        setMenuOpen(false);
+      }
+    };
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   return (
-    <header>
-      <Link className={css.margin} to="/">
-        IMG
-      </Link>
-      {isLoggedIn ? (
-        <>
-          <Link className={css.margin} to="/">
-            RECIPES
-          </Link>
+    <header className={css.header}>
+      <div className={`container ${css.inner}`}>
+        <Link className={css.logo} to="/" onClick={handleLinkClick}>
+          <img src={logo} alt="Logo" />
+          <span className={css.logoText}>Tasteorama</span>
+        </Link>
 
-          <Link className={css.margin} to="/profile/own">
-            PROFILE
-          </Link>
+        <button
+          className={css.burger}
+          onClick={toggleMenu}
+          aria-label="Toggle menu"
+        >
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
 
-          <Link className={css.margin} to="/add-recipe">
-            ADD RECIPE
-          </Link>
-
-          <span className={css.margin}>{user.name}</span>
-
-          <button className={css.margin} onClick={handleLogout}>
-            LOGOUT
+        <nav className={`${css.nav} ${menuOpen ? css.open : ""}`}>
+          <button className={css.closeBtn} onClick={closeMenu} aria-label="Close menu">
+            <svg className={css.closeIcon} width="24" height="24">
+              <use href="/img/svg/icons.svg#icon-close-mob-menu-btn" />
+            </svg>
           </button>
-        </>
-      ) : (
-        <>
-          <Link className={css.margin} to="/">
-            RECIPES
+
+          <Link to="/" className={css.link} onClick={handleLinkClick}>
+            Recipes
           </Link>
 
-          <Link className={css.margin} to="/auth/login">
-            LOGIN
-          </Link>
+          {isLoggedIn ? (
+            <>
+              <Link to="/profile/own" className={css.link} onClick={handleLinkClick}>
+                My Profile
+              </Link>
+              <Link to="/add-recipe" className={css.addBtn} onClick={handleLinkClick}>
+                Add Recipe
+              </Link>
 
-          <Link className={css.margin} to="/auth/register">
-            REGISTER
-          </Link>
-        </>
-      )}
+              <div className={css.userBlock}>
+                <div className={css.avatar}>{user.name?.[0]}</div>
+                <span className={css.userName}>{user.name}</span>
+                <button
+                  onClick={handleLogout}
+                  className={css.logoutIcon}
+                  title="Logout"
+                >
+                  <svg width="20" height="20">
+                    <use href="/img/svg/icons.svg#icon-logout" />
+                  </svg>
+                </button>
+              </div>
+            </>
+          ) : (
+            <>
+              <Link to="/auth/login" className={css.link} onClick={handleLinkClick}>
+                Log in
+              </Link>
+              <Link
+                to="/auth/register"
+                className={css.registerBtn}
+                onClick={handleLinkClick}
+              >
+                Register
+              </Link>
+            </>
+          )}
+        </nav>
+      </div>
     </header>
   );
 }
