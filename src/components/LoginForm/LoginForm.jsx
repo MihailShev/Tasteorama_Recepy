@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { logIn } from "../../redux/auth/operations";
 import { clearAuthError } from "../../redux/auth/slice.js";
 import { toast } from "react-toastify";
@@ -21,7 +21,8 @@ const LoginSchema = Yup.object({
 
 export default function LoginForm() {
   const dispatch = useDispatch();
- 
+  const navigate = useNavigate();
+
   const { error, isLoading } = useSelector((state) => state.auth);
 
   const [showPassword, setShowPassword] = useState(false);
@@ -38,7 +39,7 @@ export default function LoginForm() {
 
   useEffect(() => {
     return () => {
-      dispatch(clearAuthError()); 
+      dispatch(clearAuthError());
     };
   }, [dispatch]);
 
@@ -47,6 +48,7 @@ export default function LoginForm() {
       await dispatch(logIn(values)).unwrap();
       actions.resetForm();
       toast.success("Login successful!");
+      navigate("/");
     } catch {
       toast.error("Login failed.");
     }
