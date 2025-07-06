@@ -26,3 +26,4 @@ dist-ssr
 .env
 
 pullRequestList.txt
+package-lock.json
