@@ -96,12 +96,8 @@ export default function AddRecipeForm({ categories, ingredients }) {
       formData.append(data, values[data]);
     }
     try {
-      // const response = await axios.post(
-      //   'https://recepy-api.onrender.com/api/recipes',
-      //   formData
-      // );
       const response = await axios.post(
-        'https://bufrufrbcbcyurfugveyvwei',
+        'https://recepy-api.onrender.com/api/recipes',
         formData
       );
       navigate(`/recipes/${response.data._id}`, { replace: true });
