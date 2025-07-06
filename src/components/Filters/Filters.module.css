@@ -1,0 +1,109 @@
+.filtersSection {
+  margin-top: 48px;
+  margin-bottom: 16px;
+  max-width: 1225px;
+}
+
+.resultRow {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 16px;
+  align-items: center;
+}
+
+.title {
+  padding-bottom: 16px;
+  font-size: 32px;
+  font-weight: 600;
+}
+  @media screen and (min-width: 768px) {
+    .title { 
+        font-size: 40px;
+    }
+  }
+
+
+.count {
+  font-weight: 600;
+  font-size: 16px;
+}
+
+.filtersRow {
+  display: flex;
+  gap: 24px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+.mobileFiltersRow {
+  position: absolute;
+  top: 110%;
+  right: 0;
+  /* padding: 12px 16px; */
+  padding-left: 12px;
+  padding-top: 16px;
+  padding-bottom: 16px;
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+.mobileFiltersRow:last-child {
+  align-items: start;
+}
+
+.mobileFiltersBtn {
+  font-size: 12px;
+  font-weight: 600;
+  width: 67px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.iconContainer {
+  width: 24px;
+  height: 24px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.filtersIcon {
+  width: 13.5px;
+  height: 13.5px;
+  stroke: #000;
+  fill: none
+}
+
+.filtersIconClose {
+  width: 14.25px;
+  height: 14.25px;
+  stroke: #000;
+  fill: none
+}
+
+
+.resetBtn {
+  padding-bottom: 4px;
+  font-size: 12px;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 600;
+  border-bottom: 1px solid #000;
+}
+
+.resetBtn:hover {
+  border-color: #333;
+}
+
+.select {
+  background-color: white;
+  width: 179px;
+  height: 33px;
+  font-size: 16px;
+  font-family: 400;
+}
