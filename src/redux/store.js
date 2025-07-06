@@ -10,13 +10,14 @@ import {
   REGISTER,
 } from "redux-persist";
 import storage from "redux-persist/lib/storage";
-import authReducer from "./auth/slice";
 import reducerSlice from "./recipes/slice";
 import filtersSlice from "./filters/slice";
+import authReducer from "./auth/slice.js";
+import { injectStore } from "./index.js";
 const authPersistConfig = {
   key: "auth",
   storage,
-  whitelist: ["token"],
+  whitelist: ["token", "user", "isLoggedIn"],
 };
 
 const store = configureStore({
@@ -34,5 +35,5 @@ const store = configureStore({
 });
 
 const persistor = persistStore(store);
-
+injectStore(store);
 export { store, persistor };
