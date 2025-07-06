@@ -1,0 +1,337 @@
+.wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.titleOfSection {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 600;
+  font-size: 40px;
+  color: #000;
+  margin-top: 122px;
+  margin-bottom: 0;
+}
+
+.addRecipeForm {
+  width: 100%;
+  margin-top: 16px;
+}
+
+.uploadPhoto {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 600;
+  font-size: 24px;
+  color: #000;
+}
+
+.uploadPhotoField {
+  margin-top: 4px;
+  background: #9f9f9f;
+  width: 100%;
+  aspect-ratio: 1/1;
+  border-radius: 16px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.mainFields {
+  width: 100%;
+}
+
+.generalInformation {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 600;
+  font-size: 24px;
+  color: #000;
+  margin-top: 24px;
+}
+
+.generalInfoLabel {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 400;
+  font-size: 18px;
+  color: #000;
+  margin-top: 16px;
+  display: block;
+}
+
+.enterGeneralInfo {
+  border: 1px solid #d9d9d9;
+  border-radius: 8px;
+  padding: 12px;
+  display: inline;
+  width: 100%;
+  box-sizing: border-box;
+  background: #fff;
+  font-weight: 400;
+  font-size: 18px;
+  color: #000;
+  font-family: 'Montserrat', sans-serif;
+  margin-top: 8px;
+  resize: none;
+  transition: border 250ms linear, box-shadow 250ms linear;
+}
+
+.enterGeneralInfo:focus-within {
+  border: 1.5px solid #9b6c43;
+  box-shadow: 0 0 0 4px rgba(78, 70, 180, 0.2);
+  outline: none;
+}
+
+.inlineFields {
+  display: flex;
+  flex-direction: row;
+  gap: 16px;
+}
+
+.inlineGeneralInfoLabel {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 400;
+  font-size: 18px;
+  color: #000;
+  display: block;
+  width: calc((100% - 16px) / 2);
+}
+
+.ingredientsTitle {
+  margin-top: 40px;
+}
+
+.ingredientSection {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.nameOfIngredient {
+  width: 100%;
+}
+
+.ingredientsName {
+  font-weight: 400;
+  font-size: 18px;
+  color: #000;
+  font-family: 'Montserrat', sans-serif;
+  text-decoration: none;
+}
+
+.additionalForIngredients {
+  display: flex;
+  flex-direction: column;
+}
+
+.addIngredient {
+  border-radius: 8px;
+  padding: 12px 16px;
+  width: 100%;
+  background: #9b6c43;
+  font-weight: 600;
+  font-size: 16px;
+  text-align: center;
+  color: #fff;
+  font-family: 'Montserrat', sans-serif;
+  margin-top: 32px;
+  transition: background 150ms linear, box-shadow 250ms linear;
+}
+
+.addIngredient:hover {
+  background: #6d554b;
+}
+
+.addIngredient:focus {
+  box-shadow: 0 0 0 6px rgba(78, 70, 180, 0.12), 0 0 0 2px #fff;
+  background: #9b6c43;
+  outline: none;
+}
+
+.tableOfIngredients {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 32px;
+}
+
+.nameColumn {
+  width: calc((100% - 24px) / 2 + 12px);
+}
+
+.amountColumn {
+  width: calc((100% - 24px) / 2 - 12px);
+}
+
+.tableHeader {
+  text-align: left;
+  padding: 16px 0;
+  border-bottom: 1px solid #c5c5c5;
+}
+
+.listOfIngredients {
+  border-top: 1px solid #c5c5c5;
+  border-bottom: 1px solid #c5c5c5;
+  padding: 16px 0 19px;
+}
+
+.deleteIngredientIcon {
+  border-top: 1px solid #c5c5c5;
+  border-bottom: 1px solid #c5c5c5;
+  width: 24px;
+}
+
+.instructionsHeader {
+  font-weight: 600;
+  font-size: 24px;
+  color: #000;
+  font-family: 'Montserrat', sans-serif;
+  margin-top: 40px;
+  margin-bottom: 0px;
+}
+
+.instructionsField {
+  border: 1px solid #d9d9d9;
+  border-radius: 8px;
+  padding: 12px;
+  width: 100%;
+  font-weight: 400;
+  font-size: 18px;
+  color: #000;
+  font-family: 'Montserrat', sans-serif;
+  box-sizing: border-box;
+  resize: none;
+  transition: border 250ms linear, box-shadow 250ms linear;
+}
+
+.instructionsField:focus-within {
+  border: 1.5px solid #9b6c43;
+  box-shadow: 0 0 0 4px rgba(78, 70, 180, 0.2);
+}
+
+.submitBtn {
+  border-radius: 8px;
+  padding: 12px 16px;
+  width: 100%;
+  background: #9b6c43;
+  font-weight: 600;
+  font-size: 16px;
+  color: #fff;
+  font-family: 'Montserrat', sans-serif;
+  margin-top: 40px;
+  transition: background 150ms linear, box-shadow 250ms linear;
+}
+
+.submitBtn:hover {
+  background: #6d554b;
+}
+
+.submitBtn:focus {
+  box-shadow: 0 0 0 6px rgba(78, 70, 180, 0.12), 0 0 0 2px #fff;
+  background: #9b6c43;
+  outline: none;
+}
+
+.errorMsg {
+  margin-top: 4px;
+  font-size: 16px;
+  display: block;
+  color: #c80000;
+}
+
+.errorField {
+  border: 1.5px solid #c80000;
+}
+
+@media only screen and (min-width: 768px) {
+  .titleOfSection {
+    font-size: 48px;
+    line-height: 1.1;
+  }
+
+  .uploadPhoto {
+    font-size: 32px;
+    margin-top: 16px;
+  }
+
+  .uploadPhotoField {
+    aspect-ratio: 1.8/1;
+  }
+
+  .generalInformation {
+    font-size: 32px;
+  }
+
+  .generalInfoLabel {
+    margin-top: 32px;
+  }
+
+  .inlineGeneralInfoLabel {
+    width: calc((100% - 24px) / 2);
+  }
+
+  .inlineFields {
+    margin-top: 32px;
+    gap: 24px;
+  }
+
+  .ingredientSection {
+    flex-direction: row;
+  }
+
+  .nameOfIngredient {
+    width: calc(62.5% + 24px);
+  }
+
+  .addIngredient {
+    align-self: flex-end;
+    width: calc(37.5% + 12px);
+  }
+
+  .tableOfIngredients {
+    width: calc(62.5% - 36px);
+  }
+}
+
+@media only screen and (min-width: 1440px) {
+  .wrapper {
+    margin-top: 40px;
+  }
+
+  .desktopPhoto {
+    position: absolute;
+    right: 0;
+    top: 0;
+  }
+
+  .uploadPhoto {
+    margin-top: 0;
+  }
+
+  .uploadPhotoField {
+    width: 391px;
+    aspect-ratio: 1/1;
+  }
+
+  .mainFields {
+    max-width: 800px;
+  }
+
+  .ingredientsTitle {
+    margin-top: 72px;
+  }
+
+  .addIngredient {
+    padding: 4px 8px;
+    margin-top: 16px;
+    max-width: 258px;
+  }
+
+  .tableOfIngredients {
+    max-width: 304px;
+  }
+
+  .instructionsHeader {
+    margin-top: 72px;
+  }
+
+  .submitBtn {
+    margin-top: 72px;
+  }
+}
