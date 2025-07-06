@@ -58,13 +58,13 @@ export const logOut = createAsyncThunk("auth/logout", async (_, thunkAPI) => {
 export const refresh = createAsyncThunk("auth/refresh", async (_, thunkAPI) => {
   try {
     const response = await api.post("/api/auth/refresh");
-    const { token, user } = response.data;
+    const { accessToken } = response.data;
 
-    localStorage.setItem("accessToken", token);
-    localStorage.setItem("user", JSON.stringify(user));
+    localStorage.setItem("accessToken", accessToken);
+    const user = JSON.parse(localStorage.getItem("user"));
     return {
       user,
-      token,
+      token: accessToken,
     };
   } catch (error) {
     const message =
