@@ -1,31 +1,12 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "axios";
-
-const axiosInstance = axios.create({
-  baseURL: "https://recepy-api.onrender.com",
-  withCredentials: false,
-});
-
-export const setAuthHeader = (token) => {
-  if (token) {
-    axiosInstance.defaults.headers.common.Authorization = `Bearer ${token}`;
-  }
-};
-
-export const clearAuthHeader = () => {
-  delete axiosInstance.defaults.headers.common.Authorization;
-};
-
+import { api } from "../index.js";
 export const register = createAsyncThunk(
   "auth/register",
   async (credentials, thunkAPI) => {
     try {
-      const response = await axiosInstance.post(
-        "/api/auth/register",
-        credentials
-      );
+      const response = await api.post("/api/auth/register", credentials);
       const { name, email, accessToken } = response.data.data;
-      setAuthHeader(accessToken);
+
       localStorage.setItem("accessToken", accessToken);
       localStorage.setItem("user", JSON.stringify({ name, email }));
       return {
@@ -44,9 +25,9 @@ export const logIn = createAsyncThunk(
   "auth/login",
   async (credentials, thunkAPI) => {
     try {
-      const response = await axiosInstance.post("/api/auth/login", credentials);
+      const response = await api.post("/api/auth/login", credentials);
       const { name, email, accessToken } = response.data.data;
-      setAuthHeader(accessToken);
+
       localStorage.setItem("accessToken", accessToken);
       localStorage.setItem("user", JSON.stringify({ name, email }));
       return {
@@ -63,10 +44,10 @@ export const logIn = createAsyncThunk(
 
 export const logOut = createAsyncThunk("auth/logout", async (_, thunkAPI) => {
   try {
-    await axiosInstance.post("/api/auth/logout");
-    clearAuthHeader();
+    await api.post("/api/auth/logout");
+
     localStorage.removeItem("accessToken");
-    localStorage.removeItem("user"); 
+    localStorage.removeItem("user");
   } catch (error) {
     const message =
       error.response?.data?.message || error.message || "Unknown error";
@@ -76,14 +57,14 @@ export const logOut = createAsyncThunk("auth/logout", async (_, thunkAPI) => {
 
 export const refresh = createAsyncThunk("auth/refresh", async (_, thunkAPI) => {
   try {
-    const response = await axiosInstance.post("/api/auth/refresh");
-    const { token, user } = response.data;
-    setAuthHeader(token);
-    localStorage.setItem("accessToken", token);
-    localStorage.setItem("user", JSON.stringify(user));
+    const response = await api.post("/api/auth/refresh");
+    const { accessToken } = response.data;
+
+    localStorage.setItem("accessToken", accessToken);
+    const user = JSON.parse(localStorage.getItem("user"));
     return {
       user,
-      token,
+      token: accessToken,
     };
   } catch (error) {
     const message =

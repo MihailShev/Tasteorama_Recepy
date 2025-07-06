@@ -1,30 +1,17 @@
-import { Route, Routes } from 'react-router-dom';
-import { Suspense, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
-import { ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-import MainPage from '../../pages/MainPage/MainPage.jsx';
-import RecipeViewPage from '../../pages/RecipeViewPage/RecipeViewPage.jsx';
-import AddRecipePage from '../../pages/AddRecipePage/AddRecipePage.jsx';
-import ProfilePage from '../../pages/ProfilePage/ProfilePage.jsx';
-import AuthPage from '../../pages/AuthPage/AuthPage.jsx';
-import Layout from '../Layout/Layout.jsx';
-import NotFound from '../NotFound/NotFound.jsx';
-import PrivateRoute from '../PrivateRoute/PrivateRoute.jsx';
-import { setCredentials } from '../../redux/auth/slice.js';
-import { setAuthHeader } from '../../redux/auth/operations.js';
+import { Route, Routes } from "react-router-dom";
+import { Suspense } from "react";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import MainPage from "../../pages/MainPage/MainPage.jsx";
+import RecipeViewPage from "../../pages/RecipeViewPage/RecipeViewPage.jsx";
+import AddRecipePage from "../../pages/AddRecipePage/AddRecipePage.jsx";
+import ProfilePage from "../../pages/ProfilePage/ProfilePage.jsx";
+import AuthPage from "../../pages/AuthPage/AuthPage.jsx";
+import Layout from "../Layout/Layout.jsx";
+import NotFound from "../NotFound/NotFound.jsx";
+import PrivateRoute from "../PrivateRoute/PrivateRoute.jsx";
 
 function App() {
-  const dispatch = useDispatch();
-  useEffect(() => {
-    const token = localStorage.getItem('accessToken');
-    const user = JSON.parse(localStorage.getItem('user'));
-    if (token && user) {
-      dispatch(setCredentials({ token, user }));
-      setAuthHeader(token);
-    }
-  }, [dispatch]);
-
   return (
     <Suspense fallback={null}>
       <Routes>
