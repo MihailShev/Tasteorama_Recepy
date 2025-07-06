@@ -7,6 +7,7 @@ const usePaginatedRecipes = endpoint => {
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
   const [loading, setLoading] = useState(false);
+  const [totallItems, setTotalItems] = useState(null);
   const token = useSelector(state => state.auth.token);
 
   const fetchRecipes = async currentPage => {
@@ -20,7 +21,8 @@ const usePaginatedRecipes = endpoint => {
 
       const apiData = response.data.data;
       const newRecipes = apiData.data;
-      const next = apiData.hasNextPage;
+      const next = apiData.totalPages.hasNextPage;
+      const totalItems = apiData.totalPages.totalItems;
 
       if (currentPage === 1) {
         setRecipes(newRecipes);
@@ -29,6 +31,7 @@ const usePaginatedRecipes = endpoint => {
       }
 
       setHasMore(next);
+      setTotalItems(totalItems);
     } catch (error) {
       error.message;
     } finally {
@@ -47,7 +50,7 @@ const usePaginatedRecipes = endpoint => {
     fetchRecipes(nextPage);
   };
 
-  return { recipes, loading, hasMore, loadMore };
+  return { recipes, loading, hasMore, loadMore, totallItems };
 };
 
 export default usePaginatedRecipes;
