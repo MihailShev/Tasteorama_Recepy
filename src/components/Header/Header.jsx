@@ -51,8 +51,12 @@ export default function Header() {
         </button>
 
         <nav className={`${css.nav} ${menuOpen ? css.open : ""}`}>
-          <button className={css.closeBtn} onClick={closeMenu} aria-label="Close menu">
-            <svg className={css.closeIcon} width="24" height="24">
+          <button
+            className={css.closeBtn}
+            onClick={closeMenu}
+            aria-label="Close menu"
+          >
+            <svg className={css.closeIcon} width="32" height="32">
               <use href="/img/svg/icons.svg#icon-close-mob-menu-btn" />
             </svg>
           </button>
@@ -63,10 +67,18 @@ export default function Header() {
 
           {isLoggedIn ? (
             <>
-              <Link to="/profile/own" className={css.link} onClick={handleLinkClick}>
+              <Link
+                to="/profile/own"
+                className={css.link}
+                onClick={handleLinkClick}
+              >
                 My Profile
               </Link>
-              <Link to="/add-recipe" className={css.addBtn} onClick={handleLinkClick}>
+              <Link
+                to="/add-recipe"
+                className={css.addBtn}
+                onClick={handleLinkClick}
+              >
                 Add Recipe
               </Link>
 
@@ -78,7 +90,7 @@ export default function Header() {
                   className={css.logoutIcon}
                   title="Logout"
                 >
-                  <svg width="20" height="20">
+                  <svg className={css.iconLOgOut} width="20" height="20">
                     <use href="/img/svg/icons.svg#icon-logout" />
                   </svg>
                 </button>
@@ -86,7 +98,11 @@ export default function Header() {
             </>
           ) : (
             <>
-              <Link to="/auth/login" className={css.link} onClick={handleLinkClick}>
+              <Link
+                to="/auth/login"
+                className={css.link}
+                onClick={handleLinkClick}
+              >
                 Log in
               </Link>
               <Link
