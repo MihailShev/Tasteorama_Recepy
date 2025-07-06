@@ -12,6 +12,7 @@ html {
 
 body::-webkit-scrollbar {
   display: none;
+  background-color: #fbfcf8;
 }
 
 body {
