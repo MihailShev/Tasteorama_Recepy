@@ -110,7 +110,7 @@ export default function LoginForm() {
                       >
                         <svg className={css.eyeIcon}>
                           <use
-                            href={`/public/img/svg/icons.svg#${
+                            href={`/img/svg/icons.svg#${
                               showPassword ? "icon-eye" : "icon-eye-crossed"
                             }`}
                             fill="none"
