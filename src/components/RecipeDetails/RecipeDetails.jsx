@@ -9,7 +9,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { addFavorite, removeFavorite } from "../../redux/auth/operations";
 import { toast } from "react-toastify";
 import clsx from "clsx";
-import { useNavigate } from "react-router-dom";
+import SaveRecipeNotAuthorized from "../AddRecipeForm/Save_recipe_not_autorised";
 
 export default function RecipeDetails({
   recipe,
@@ -17,10 +17,11 @@ export default function RecipeDetails({
 }) {
   const [instructions, SetInstructions] = useState(null);
   const [isLoading, SetIsLoading] = useState(false);
+  const [showSaveModal, setShowSaveModal] = useState(false); // ← Добавлено
+
   const token = useSelector(selectToken);
   const isLoggedIn = useSelector(selectIsLoggedIn);
   const dispatch = useDispatch();
-  const navigate = useNavigate();
 
   const user = useSelector(selectUser);
   const isFavorite =
@@ -28,8 +29,8 @@ export default function RecipeDetails({
     recipe?._id &&
     user.favorites.includes(String(recipe._id));
 
-  const handleRedirect = () => {
-    navigate("/auth/login");
+  const handleOpenSaveModal = () => {
+    setShowSaveModal(true); // ← Показываем модалку
   };
 
   async function onAdd(recipe) {
@@ -46,6 +47,7 @@ export default function RecipeDetails({
       SetIsLoading(false);
     }
   }
+
   async function onDelete(recipe) {
     try {
       SetIsLoading(true);
@@ -60,6 +62,7 @@ export default function RecipeDetails({
       SetIsLoading(false);
     }
   }
+
   useEffect(() => {
     if (recipe?.instructions) {
       const formattedInstructions = recipe.instructions
@@ -73,7 +76,6 @@ export default function RecipeDetails({
       SetInstructions(formattedInstructions);
     }
   }, [recipe, user]);
-
   // const mergedIngredients = recipe?.ingredients.map((item) => {
   //   const fullIngredient = ingredientsList.find(
   //     (ingredient) => ingredient._id === item.ingredient
@@ -152,7 +154,7 @@ export default function RecipeDetails({
                 )
               ) : (
                 <button
-                  onClick={() => handleRedirect()}
+                  onClick={handleOpenSaveModal} // ← Показываем модалку
                   className={clsx(style.btn, { [style.loading]: isLoading })}
                 >
                   Save
@@ -172,7 +174,7 @@ export default function RecipeDetails({
                 Remove
               </button> */}
             </div>
-            {/* ------------------------------ */}
+
             <div className={style.about}>
               <div className={style.box}>
                 <h2 className={style.subtitle}>About recipe</h2>
@@ -195,6 +197,10 @@ export default function RecipeDetails({
             </div>
           </div>
         </div>
+      )}
+
+      {showSaveModal && (
+        <SaveRecipeNotAuthorized onClose={() => setShowSaveModal(false)} />
       )}
     </>
   );
