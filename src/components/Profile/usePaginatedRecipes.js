@@ -21,8 +21,8 @@ const usePaginatedRecipes = endpoint => {
 
       const apiData = response.data.data;
       const newRecipes = apiData.data;
-      const next = apiData.totalPages.hasNextPage;
-      const totalItems = apiData.totalPages.totalItems;
+      const next = apiData.hasNextPage;
+      const totalItems = apiData.totalItems;
 
       if (currentPage === 1) {
         setRecipes(newRecipes);
