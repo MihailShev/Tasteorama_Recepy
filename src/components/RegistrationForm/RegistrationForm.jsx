@@ -138,7 +138,7 @@ export default function RegistrationForm() {
                   >
                     <svg className={css.eyeIcon}>
                       <use
-                        href={`/public/img/svg/icons.svg#${
+                        href={`/img/svg/icons.svg#${
                           showPassword ? "icon-eye" : "icon-eye-crossed"
                         }`}
                         fill="none"
@@ -175,7 +175,7 @@ export default function RegistrationForm() {
                   >
                     <svg className={css.eyeIcon}>
                       <use
-                        href={`/public/img/svg/icons.svg#${
+                        href={`/img/svg/icons.svg#${
                           showConfirmPassword ? "icon-eye" : "icon-eye-crossed"
                         }`}
                         fill="none"
@@ -205,7 +205,7 @@ export default function RegistrationForm() {
                       />
                       <span className={css.checkboxCustom}>
                         <svg width="16" height="16">
-                          <use href="/public/img/svg/icons.svg#icon-Privacy-Policy" />
+                          <use href="/img/svg/icons.svg#icon-Privacy-Policy" />
                         </svg>
                       </span>
                       <span className={css.labelText}>
