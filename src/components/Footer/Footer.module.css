@@ -1,0 +1,83 @@
+.footer {
+    background-color: #3a2016;
+    color: white;
+    padding: 1.5rem 0;
+}
+
+.inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 32px;
+    text-align: center;
+}
+
+.logoBlock {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.logo {
+    width: 32px;
+    height: auto;
+}
+
+.logoText {
+    font-weight: 600;
+        font-size: 18px;
+        letter-spacing: -0.03em;
+}
+
+/* Text */
+.copyright {
+    font-weight: 400;
+        font-size: 12px;
+}
+
+/* Navigation */
+.nav {
+    display: flex;
+    flex-direction: column;
+    gap: 44px;
+}
+
+.link {
+    color: white;
+    background: none;
+    border: none;
+    text-decoration: none;
+    font-weight: 600;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+/* Tablet (768px+) */
+@media (min-width: 768px) {
+
+    .nav {
+        flex-direction: row;
+        gap:32px;
+    }
+
+}
+
+/* Desktop (1440px+) */
+@media (min-width: 1440px) {
+.inner {
+flex-direction: row;
+justify-content: space-between;
+text-align: left;
+}
+
+.nav {
+flex-direction: row;
+ gap: 2rem;  
+ }
+
+ .copyright {
+text-align: center;
+flex-grow: 1;              
+ }
+
+}
