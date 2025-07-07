@@ -4,9 +4,9 @@ import { MdOutlinePhotoCamera } from 'react-icons/md';
 import { RiDeleteBin4Line } from 'react-icons/ri';
 import { Formik, Form, Field, FieldArray, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
-import axios from 'axios';
 import { useNavigate } from 'react-router';
 import { toast, ToastContainer } from 'react-toastify';
+import api from 'redux';
 
 export default function AddRecipeForm({ categories, ingredients }) {
   const [preview, setPreview] = useState(null);
@@ -96,10 +96,7 @@ export default function AddRecipeForm({ categories, ingredients }) {
       formData.append(data, values[data]);
     }
     try {
-      const response = await axios.post(
-        'https://recepy-api.onrender.com/api/recipes',
-        formData
-      );
+      const response = await api.post('api/recipes', formData);
       navigate(`/recipes/${response.data._id}`, { replace: true });
     } catch (error) {
       actions.resetForm();
