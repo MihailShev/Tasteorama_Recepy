@@ -1,16 +1,16 @@
 import usePaginatedRecipes from "../usePaginatedRecipes.js";
 import RecipesList from "../../RecipesList/RecipesList";
 import LoadMoreBtn from "../../LoadMoreBtn/LoadMoreBtn";
-import styles from "./OwnRecipes.module.css";
+import Loader from "../../Loader/Loader.jsx";
 
 const OwnRecipes = () => {
-  const { recipes, loading, hasMore, loadMore } = usePaginatedRecipes("recipes/own");
+  const { recipes, loading, hasMore, loadMore, totallItems } = usePaginatedRecipes("recipes/own");
 
   return (
-    <div className={styles.bg}>
-      <RecipesList recipes={recipes} />
+    <div>
+      <RecipesList recipes={recipes} totallItems={totallItems} />
+      {loading && <Loader />}
       {hasMore && !loading && <LoadMoreBtn load={loadMore} />}
-      {loading && <p>Loading...</p>}
     </div>
   );
 };

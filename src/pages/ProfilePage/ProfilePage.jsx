@@ -2,6 +2,7 @@ import { useParams, Navigate } from "react-router";
 import ProfileNavigation from "../../components/ProfileNavigation/ProfileNavigation.jsx";
 import OwnRecipes from "../../components/Profile/OwnRecipes/OwnRecipes.jsx";
 import SavedRecipes from "../../components/Profile/SavedRecipes/SavedRecipes";
+import styles from "./ProfilePage.module.css";
 
 export default function ProfilePage() {
   const { recipeType } = useParams();
@@ -16,7 +17,7 @@ export default function ProfilePage() {
   }
 
   return (
-    <section className='container'>
+    <section className={`container ${styles.padding}`}>
       <ProfileNavigation />
       {content}
     </section>

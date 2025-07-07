@@ -1,15 +1,16 @@
 import RecipeCard from "../RecipeCard/RecipeCard";
 import css from "./RecipesList.module.css";
 
-export default function RecipesList({ recipes }) {
+export default function RecipesList({ recipes, totallItems }) {
   if (!recipes || recipes.length === 0) {
     return <p className={css.noRecipes}>No recipes available.</p>;
   }
+
   return (
     <>
-      {recipes.totalItems > 0 && (
+      {totallItems > 0 && (
         <p className={css.total}>
-          {recipes.totalItems} {recipes.totalItems === 1 ? "recipe" : "recipes"}
+          {totallItems} {totallItems === 1 ? "recipe" : "recipes"}
         </p>
       )}
       <ul className={css.list}>

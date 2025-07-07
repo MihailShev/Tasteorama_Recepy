@@ -1,0 +1,11 @@
+.padding {
+  padding-top: 48px;
+  padding-bottom: 48px;
+}
+
+@media only screen and (min-width: 1440px) {
+  .padding {
+    padding-top: 46px;
+    padding-bottom: 46px;
+  }
+}
