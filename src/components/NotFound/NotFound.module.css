@@ -1,0 +1,33 @@
+.wrap {
+  text-align: center;
+  padding-top: 48px;
+  padding-bottom: 48px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.logo {
+  stroke: #000;
+  margin-left: 50px;
+}
+.name {
+  margin-bottom: 60px;
+  font-weight: 600;
+  font-size: 40px;
+  color: #000;
+}
+.err {
+  font-weight: 900;
+  font-size: 40px;
+  color: #000;
+}
+.title {
+  font-weight: 900;
+  font-size: 50px;
+  margin-bottom: 20px;
+}
+.timer {
+  margin-top: 10px;
+  font-size: 20px;
+}

@@ -40,7 +40,14 @@ function App() {
             }
           />
 
-          <Route path="*" element={<NotFound />} />
+          <Route
+            path="*"
+            element={
+              <NotFound>
+                <p>Page not found</p>
+              </NotFound>
+            }
+          />
         </Route>
       </Routes>
       <ToastContainer />

@@ -1,10 +1,18 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { register, logIn, logOut, refresh } from "./operations.js";
+import {
+  register,
+  logIn,
+  logOut,
+  refresh,
+  addFavorite,
+  removeFavorite,
+} from "./operations.js";
 
 const initialState = {
   user: {
     name: null,
     email: null,
+    favorites: [],
   },
   token: null,
   isLoggedIn: false,
@@ -18,7 +26,13 @@ const authSlice = createSlice({
   initialState,
   reducers: {
     setCredentials(state, action) {
-      state.user = action.payload.user;
+      state.user = {
+        name: action.payload.user?.name || null,
+        email: action.payload.user?.email || null,
+        favorites: Array.isArray(action.payload.user?.favorites)
+          ? action.payload.user.favorites
+          : [],
+      };
       state.token = action.payload.token;
       state.isLoggedIn = true;
     },
@@ -36,7 +50,12 @@ const authSlice = createSlice({
         state.error = null;
       })
       .addCase(register.fulfilled, (state, action) => {
-        state.user = action.payload.user || { name: null, email: null };
+        state.user = action.payload.user
+          ? {
+              ...action.payload.user,
+              favorites: action.payload.user.favorites || [],
+            }
+          : { name: null, email: null, favorites: [] };
         state.token = action.payload.token || null;
         state.isLoggedIn = true;
         state.isLoading = false;
@@ -52,7 +71,12 @@ const authSlice = createSlice({
         state.error = null;
       })
       .addCase(logIn.fulfilled, (state, action) => {
-        state.user = action.payload.user;
+        state.user = action.payload.user
+          ? {
+              ...action.payload.user,
+              favorites: action.payload.user.favorites || [],
+            }
+          : { name: null, email: null, favorites: [] };
         state.token = action.payload.token;
         state.isLoggedIn = true;
         state.isLoading = false;
@@ -67,7 +91,7 @@ const authSlice = createSlice({
         state.error = null;
       })
       .addCase(logOut.fulfilled, (state) => {
-        state.user = { name: null, email: null };
+        state.user = { name: null, email: null, favorites: [] };
         state.token = null;
         state.isLoggedIn = false;
         state.isLoading = false;
@@ -88,6 +112,17 @@ const authSlice = createSlice({
       .addCase(refresh.rejected, (state, action) => {
         state.error = action.payload || action.error?.message;
         state.isRefreshing = false;
+      })
+      .addCase(addFavorite.fulfilled, (state, action) => {
+        if (!Array.isArray(state.user.favorites)) {
+          state.user.favorites = [];
+        }
+        state.user.favorites.push(action.payload);
+      })
+      .addCase(removeFavorite.fulfilled, (state, action) => {
+        state.user.favorites = state.user.favorites.filter(
+          (id) => id !== action.payload
+        );
       }),
 });
 

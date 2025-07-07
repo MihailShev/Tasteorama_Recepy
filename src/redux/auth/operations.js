@@ -5,12 +5,12 @@ export const register = createAsyncThunk(
   async (credentials, thunkAPI) => {
     try {
       const response = await api.post("/api/auth/register", credentials);
-      const { name, email, accessToken } = response.data.data;
+      const { name, email, favorites, accessToken } = response.data.data;
 
       localStorage.setItem("accessToken", accessToken);
-      localStorage.setItem("user", JSON.stringify({ name, email }));
+      localStorage.setItem("user", JSON.stringify({ name, email, favorites }));
       return {
-        user: { name, email },
+        user: { name, email, favorites: favorites || [] },
         token: accessToken,
       };
     } catch (error) {
@@ -26,12 +26,12 @@ export const logIn = createAsyncThunk(
   async (credentials, thunkAPI) => {
     try {
       const response = await api.post("/api/auth/login", credentials);
-      const { name, email, accessToken } = response.data.data;
+      const { name, email, favorites, accessToken } = response.data.data;
 
       localStorage.setItem("accessToken", accessToken);
-      localStorage.setItem("user", JSON.stringify({ name, email }));
+      localStorage.setItem("user", JSON.stringify({ name, email, favorites }));
       return {
-        user: { name, email },
+        user: { name, email, favorites: favorites || [] },
         token: accessToken,
       };
     } catch (error) {
@@ -72,3 +72,42 @@ export const refresh = createAsyncThunk("auth/refresh", async (_, thunkAPI) => {
     return thunkAPI.rejectWithValue(message);
   }
 });
+export const addFavorite = createAsyncThunk(
+  "api/recipes/favorites",
+  async ({ recipeId, token }, thunkAPI) => {
+    try {
+      const response = await api.post(
+        `/api/recipes/favorites/${recipeId}`,
+        null,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      return response.data.data._id;
+    } catch (err) {
+      return thunkAPI.rejectWithValue(err.response?.data || err.message);
+    }
+  }
+);
+export const removeFavorite = createAsyncThunk(
+  "api/recipes/removeFavorites",
+  async ({ recipeId, token }, thunkAPI) => {
+    try {
+      const url = `https://recepy-api.onrender.com/api/recipes/favorites/${recipeId}`;
+      const response = await api.delete(
+        `/api/recipes/favorites/${recipeId}`,
+        url,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      return response.data.data.recipeId;
+    } catch (err) {
+      return thunkAPI.rejectWithValue(err.response?.data || err.message);
+    }
+  }
+);
