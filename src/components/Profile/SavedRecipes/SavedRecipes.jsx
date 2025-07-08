@@ -10,7 +10,7 @@ const SavedRecipes = () => {
     <div>
       <RecipesList recipes={recipes} totallItems={totallItems} />
       {loading && <Loader />}
-      {hasMore && !loading && <LoadMoreBtn load={loadMore} />}
+      {hasMore && !loading && <LoadMoreBtn onLoad={loadMore} />}
     </div>
   );
 };
