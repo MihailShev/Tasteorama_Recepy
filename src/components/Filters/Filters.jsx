@@ -5,13 +5,17 @@ import { selectSelectedCategory, selectSelectedIngredient } from '../../redux/fi
 import { setSelectedCategory, setSelectedIngredient, resetSelectedFilters} from '../../redux/filters/slice'
 import css from './Filters.module.css';
 import Dropdown from '../DropDown/DropDown';
-import { selectTotalRecipes } from '../../redux/recipes/selectors';
+import { selectRecipesLoading, selectTotalRecipes } from '../../redux/recipes/selectors';
+
+
 
 
 
 export default function Filters({categories, ingredients}) {
+  const recipesAreLoading = useSelector(selectRecipesLoading);
   const isMobile = useMediaQuery({ maxWidth: 1439 });
-   const [isFilterOpen, setisFilterOpen] = useState(false);
+  
+  const [isFilterOpen, setisFilterOpen] = useState(false);
   const totalRecipes = useSelector(selectTotalRecipes);
   const dispatch = useDispatch();
   
@@ -32,7 +36,11 @@ export default function Filters({categories, ingredients}) {
       <h2 className={css.title}>Recipes</h2>
 
       <div className={css.resultRow}>
+      {recipesAreLoading ? (
+        <p className={css.count}>Loading recipes number...</p>
+      ) : (
         <p className={css.count}>{totalRecipes} recipes</p>
+      )}
         {isMobile ? (
         <>
         <button className={css.mobileFiltersBtn} onClick={handleMobileFiltersOpen}> 
@@ -40,12 +48,12 @@ export default function Filters({categories, ingredients}) {
             {isFilterOpen 
             ? (<div className={css.iconContainer}>
               <svg className={css.filtersIconClose} aria-label="icon">
-              <use xlinkHref="/img/svg/icons.svg#icon-close-mob-menu-btn" />
+              <use href="/img/svg/icons.svg#icon-close-mob-menu-btn" />
               </svg>
               </div>)
             : (<div className={css.iconContainer}>
               <svg className={css.filtersIcon} aria-label="icon">
-              <use xlinkHref="/img/svg/icons.svg#icon-filter" />
+              <use href="/img/svg/icons.svg#icon-filter" />
               </svg>
               </div>)}
         </button>

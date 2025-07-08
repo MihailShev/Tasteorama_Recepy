@@ -149,3 +149,15 @@
   stroke: #000;
   fill: none
 }
+
+
+.remove {
+  background-color: #9B6C43;
+  opacity: 0.9;
+}
+
+.loading {
+  box-shadow: 0 0 0 6px rgba(78, 70, 180, 0.12), 0 0 0 2px #fff;
+  background-color: #9b6c43;
+  opacity: 0.3;
+}
