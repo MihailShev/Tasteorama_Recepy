@@ -7,6 +7,7 @@ import * as Yup from 'yup';
 import axios from 'axios';
 import { useNavigate } from 'react-router';
 import { toast, ToastContainer } from 'react-toastify';
+import { api } from '../../redux';
 
 export default function AddRecipeForm({ categories, ingredients }) {
   const [preview, setPreview] = useState(null);
@@ -47,7 +48,7 @@ export default function AddRecipeForm({ categories, ingredients }) {
     ingredients: Yup.array()
       .of(
         Yup.object({
-          id: Yup.string('Ingredients id must be a string!')
+          ingredient: Yup.string('Ingredients id must be a string!')
             .length(24, 'Too long!')
             .required('Required!'),
           measure: Yup.string('Measure must be a string!')
@@ -85,18 +86,19 @@ export default function AddRecipeForm({ categories, ingredients }) {
   async function handleSubmit(values, actions) {
     delete values.newIngredientName;
     delete values.newIngredientAmount;
-    values.ingredientAmount = values.ingredients.length;
-    const normalizedIngredients = JSON.stringify(values.ingredients);
-    values.ingredients = normalizedIngredients;
     const formData = new FormData();
     formData.append('thumb', selectedFile);
     const arrayOfKeys = Object.keys(values);
     for (let i = 0; i < arrayOfKeys.length; i += 1) {
       const data = arrayOfKeys[i];
-      formData.append(data, values[data]);
+      if (data !== 'ingredients') {
+        formData.append(data, values[data]);
+      } else {
+        formData.append('ingredients', JSON.stringify(values.ingredients));
+      }
     }
     try {
-      const response = await axios.post(
+      const response = await api.post(
         'https://recepy-api.onrender.com/api/recipes',
         formData
       );
@@ -357,7 +359,7 @@ export default function AddRecipeForm({ categories, ingredients }) {
                                 )
                               ) {
                                 push({
-                                  id: itemId,
+                                  ingredient: itemId,
                                   measure: values.newIngredientAmount,
                                 });
                                 setFieldValue('newIngredientAmount', '');
@@ -389,13 +391,14 @@ export default function AddRecipeForm({ categories, ingredients }) {
                             <tbody>
                               {values.ingredients.map((item, index) => {
                                 return (
-                                  <tr key={item.id}>
+                                  <tr key={item.ingredient}>
                                     <td
                                       className={`${css.listOfIngredients} ${css.nameColumn}`}
                                     >
                                       {
                                         ingredients.find(
-                                          itemList => itemList._id === item.id
+                                          itemList =>
+                                            itemList._id === item.ingredient
                                         ).name
                                       }
                                     </td>

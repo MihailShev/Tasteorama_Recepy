@@ -8,7 +8,7 @@
   font-weight: 600;
   font-size: 40px;
   color: #000;
-  margin-top: 122px;
+  margin-top: 48px;
   margin-bottom: 0;
 }
 
@@ -216,6 +216,7 @@
   font-family: 'Montserrat', sans-serif;
   margin-top: 40px;
   transition: background 150ms linear, box-shadow 250ms linear;
+  margin-bottom: 48px;
 }
 
 .submitBtn:hover {
