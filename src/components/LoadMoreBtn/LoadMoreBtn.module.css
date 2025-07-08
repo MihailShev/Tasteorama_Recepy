@@ -7,13 +7,14 @@
   border-radius: 8px;
   padding: 16px;
   background-color: #9b6c43;
+  margin-bottom: 48px;
 }
 
 @media only screen and (min-width: 768px) {
   .loadMore {
     display: flex;
     justify-content: center;
-    margin: 0 auto;
+    margin: 0 auto 48px auto;
     max-width: 338px;
     transition: background-color 0.2s ease, box-shadow 0.2s ease;
     &:focus,
