@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation} from "react-router-dom";
 import { useEffect, useState } from "react";
 import { logOut } from "../../redux/auth/operations.js";
 import css from "./Header.module.css";
@@ -11,6 +11,7 @@ export default function Header() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [menuOpen, setMenuOpen] = useState(false);
+  const location = useLocation();
 
   const handleLogout = async () => {
     await dispatch(logOut());
@@ -61,15 +62,19 @@ export default function Header() {
             </svg>
           </button>
 
-          <Link to="/" className={css.link} onClick={handleLinkClick}>
-            Recipes
-          </Link>
+          <Link
+  to="/"
+  className={`${css.link} ${location.pathname === "/" ? css.active : ""}`}
+  onClick={handleLinkClick}
+>
+  Recipes
+</Link>
 
           {isLoggedIn ? (
             <>
               <Link
                 to="/profile/own"
-                className={css.link}
+                className={`${css.link} ${location.pathname === "/profile/own" ? css.active : ""}`}
                 onClick={handleLinkClick}
               >
                 My Profile
@@ -99,12 +104,12 @@ export default function Header() {
           ) : (
             <>
               <Link
-                to="/auth/login"
-                className={css.link}
-                onClick={handleLinkClick}
-              >
-                Log in
-              </Link>
+  to="/auth/login"
+  className={`${css.link} ${location.pathname === "/auth/login" ? css.active : ""}`}
+  onClick={handleLinkClick}
+>
+  Log in
+</Link>
               <Link
                 to="/auth/register"
                 className={css.registerBtn}
