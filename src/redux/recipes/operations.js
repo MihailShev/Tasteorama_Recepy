@@ -3,12 +3,12 @@ import { api } from "../index.js";
 
 export const fetchRecipes = createAsyncThunk(
   'recipes/fetchRecipes',
-  async ({ category, ingredient, title }, thunkAPI) => {
+  async ({ category, ingredient, title, page }, thunkAPI) => {
     const params = {};
     if (category) params.category = category;
     if (ingredient) params.ingredient = ingredient;
     if (title) params.title = title;
-
+    params.page = page;
     try {
       const response = await api.get('/api/recipes', { params });
       const responseData = response.data.data;

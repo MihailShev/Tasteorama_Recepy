@@ -8,6 +8,11 @@ const recipesSlice = createSlice({
     loading: false,
     error: false
   },
+  reducers: {
+     resetRecipeItems(state) {
+      state.items = [];
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(fetchRecipes.pending, (state) => {
@@ -16,7 +21,11 @@ const recipesSlice = createSlice({
       })
       .addCase(fetchRecipes.fulfilled, (state, action) => {
         state.loading = false;
-        state.items = action.payload.items;
+        if (!action.payload.page || action.payload.page === 1) {
+          state.items = action.payload.items;
+        } else {
+          state.items.push(...action.payload.items);
+        }
         state.page = action.payload.page;
         state.perPage = action.payload.perPage;
         state.totalItems = action.payload.totalItems;
@@ -30,5 +39,7 @@ const recipesSlice = createSlice({
       });
   }
 });
+
+export const {resetRecipeItems} = recipesSlice.actions;
 
 export default recipesSlice.reducer;

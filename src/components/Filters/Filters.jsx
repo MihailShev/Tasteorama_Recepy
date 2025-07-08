@@ -6,7 +6,9 @@ import { setSelectedCategory, setSelectedIngredient, resetSelectedFilters} from 
 import css from './Filters.module.css';
 import Dropdown from '../DropDown/DropDown';
 import { selectRecipesLoading, selectTotalRecipes } from '../../redux/recipes/selectors';
-
+import { resetRecipeItems } from '../../redux/recipes/slice';
+import { fetchRecipes } from '../../redux/recipes/operations';
+import Loader from '../Loader/Loader';
 
 
 
@@ -14,17 +16,23 @@ import { selectRecipesLoading, selectTotalRecipes } from '../../redux/recipes/se
 export default function Filters({categories, ingredients}) {
   const recipesAreLoading = useSelector(selectRecipesLoading);
   const isMobile = useMediaQuery({ maxWidth: 1439 });
-  
   const [isFilterOpen, setisFilterOpen] = useState(false);
   const totalRecipes = useSelector(selectTotalRecipes);
   const dispatch = useDispatch();
-  
+
   const selectedCategory = useSelector(selectSelectedCategory);
   const selectedIngredient = useSelector(selectSelectedIngredient);
 
 
   const handleReset = () => {
     dispatch(resetSelectedFilters());
+    dispatch(resetRecipeItems());
+    dispatch(
+      fetchRecipes({
+        category: '',
+        ingredient: '',
+        title: '',
+      }))
   };
 
   const handleMobileFiltersOpen = () => {
@@ -37,7 +45,9 @@ export default function Filters({categories, ingredients}) {
 
       <div className={css.resultRow}>
       {recipesAreLoading ? (
-        <p className={css.count}>Loading recipes number...</p>
+        <div className={css.recipesNumber}>
+        <p className={css.count}>Loading recipes number</p> <Loader size={12} className={""}/>
+        </div>
       ) : (
         <p className={css.count}>{totalRecipes} recipes</p>
       )}
