@@ -23,6 +23,12 @@
     }
   }
 
+.recipesNumber {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 12px;
+}
 
 .count {
   font-weight: 600;
