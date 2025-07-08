@@ -1,17 +1,16 @@
-import { useEffect, useId, useState } from 'react';
-import css from './AddRecipeForm.module.css';
-import { MdOutlinePhotoCamera } from 'react-icons/md';
-import { RiDeleteBin4Line } from 'react-icons/ri';
-import { Formik, Form, Field, FieldArray, ErrorMessage } from 'formik';
-import * as Yup from 'yup';
-import axios from 'axios';
-import { useNavigate } from 'react-router';
-import { toast, ToastContainer } from 'react-toastify';
-import { api } from '../../redux';
+import { useEffect, useId, useState } from "react";
+import css from "./AddRecipeForm.module.css";
+import { MdOutlinePhotoCamera } from "react-icons/md";
+import { RiDeleteBin4Line } from "react-icons/ri";
+import { Formik, Form, Field, FieldArray, ErrorMessage } from "formik";
+import * as Yup from "yup";
+import { useNavigate } from "react-router";
+import { toast, ToastContainer } from "react-toastify";
+import { api } from "../../redux";
 
 export default function AddRecipeForm({ categories, ingredients }) {
   const [preview, setPreview] = useState(null);
-  const [selectedFile, setSelectedFile] = useState('');
+  const [selectedFile, setSelectedFile] = useState("");
   const [screenWidth, setScreenWidth] = useState(window.innerWidth);
   const id = useId();
   const navigate = useNavigate();
@@ -21,55 +20,55 @@ export default function AddRecipeForm({ categories, ingredients }) {
       setScreenWidth(window.innerWidth);
     }
 
-    window.addEventListener('resize', handleResize);
+    window.addEventListener("resize", handleResize);
 
     return () => {
-      window.removeEventListener('resize', handleResize);
+      window.removeEventListener("resize", handleResize);
     };
   }, []);
 
   const validation = Yup.object().shape({
-    title: Yup.string('Title must be a string!')
-      .max(64, 'Too long!')
-      .required('Required!'),
-    description: Yup.string('Description must be a string!')
-      .max(200, 'Too long!')
-      .required('Required!'),
-    time: Yup.number('Cooking time must be a number!')
-      .min(1, 'Cannot be less than or equal to 0')
-      .max(360, 'Too long!')
-      .required('Required!'),
-    cals: Yup.number('Calories must be a number!')
-      .min(1, 'Cannot be less than or equal to 0')
-      .max(10000, 'Too long!'),
-    category: Yup.string('Category must be a string!').required('Required!'),
-    newIngredientName: Yup.string('Name of ingredient must be a string!'),
-    newIngredientAmount: Yup.string('Measure must be a string!').trim(),
+    title: Yup.string("Title must be a string!")
+      .max(64, "Too long!")
+      .required("Required!"),
+    description: Yup.string("Description must be a string!")
+      .max(200, "Too long!")
+      .required("Required!"),
+    time: Yup.number("Cooking time must be a number!")
+      .min(1, "Cannot be less than or equal to 0")
+      .max(360, "Too long!")
+      .required("Required!"),
+    cals: Yup.number("Calories must be a number!")
+      .min(1, "Cannot be less than or equal to 0")
+      .max(10000, "Too long!"),
+    category: Yup.string("Category must be a string!").required("Required!"),
+    newIngredientName: Yup.string("Name of ingredient must be a string!"),
+    newIngredientAmount: Yup.string("Measure must be a string!").trim(),
     ingredients: Yup.array()
       .of(
         Yup.object({
-          ingredient: Yup.string('Ingredients id must be a string!')
-            .length(24, 'Too long!')
-            .required('Required!'),
-          measure: Yup.string('Measure must be a string!')
+          id: Yup.string("Ingredients id must be a string!")
+            .length(24, "Too long!")
+            .required("Required!"),
+          measure: Yup.string("Measure must be a string!")
             .trim()
-            .required('Required!'),
+            .required("Required!"),
         })
       )
-      .required('Required!'),
-    instructions: Yup.string('Instructions must be a string!')
-      .max(1200, 'Too long!')
-      .required('Required!'),
+      .required("Required!"),
+    instructions: Yup.string("Instructions must be a string!")
+      .max(1200, "Too long!")
+      .required("Required!"),
   });
 
   function handleChangePhoto(event) {
     event.preventDefault();
 
     const file = event.target.files[0];
-    const allowedFormats = ['jpg', 'jpeg', 'png'];
+    const allowedFormats = ["jpg", "jpeg", "png"];
 
     if (file) {
-      const givenFormat = event.target.value.toLowerCase().split('.').pop();
+      const givenFormat = event.target.value.toLowerCase().split(".").pop();
       if (allowedFormats.includes(givenFormat)) {
         const reader = new FileReader();
         reader.onload = function (event) {
@@ -81,32 +80,30 @@ export default function AddRecipeForm({ categories, ingredients }) {
     }
   }
 
-  const notify = message => toast.error(message);
+  const notify = (message) => toast.error(message);
 
   async function handleSubmit(values, actions) {
     delete values.newIngredientName;
     delete values.newIngredientAmount;
     const formData = new FormData();
-    formData.append('thumb', selectedFile);
+    formData.append("thumb", selectedFile);
     const arrayOfKeys = Object.keys(values);
     for (let i = 0; i < arrayOfKeys.length; i += 1) {
       const data = arrayOfKeys[i];
-      if (data !== 'ingredients') {
+      if (data !== "ingredients") {
         formData.append(data, values[data]);
       } else {
-        formData.append('ingredients', JSON.stringify(values.ingredients));
+        formData.append("ingredients", JSON.stringify(values.ingredients));
       }
     }
+    console.log(values);
     try {
-      const response = await api.post(
-        'https://recepy-api.onrender.com/api/recipes',
-        formData
-      );
+      const response = await api.post("/api/recipes", formData);
       navigate(`/recipes/${response.data._id}`, { replace: true });
     } catch (error) {
       actions.resetForm();
       setPreview(null);
-      setSelectedFile('');
+      setSelectedFile("");
       notify(error.message);
     }
   }
@@ -124,15 +121,15 @@ export default function AddRecipeForm({ categories, ingredients }) {
       <h2 className={css.titleOfSection}>Add Recipe</h2>
       <Formik
         initialValues={{
-          title: '',
-          description: '',
-          time: '',
-          cals: '',
-          category: 'Soup',
-          newIngredientName: 'Squid',
-          newIngredientAmount: '',
+          title: "",
+          description: "",
+          time: "",
+          cals: "",
+          category: "Soup",
+          newIngredientName: "Squid",
+          newIngredientAmount: "",
           ingredients: [],
-          instructions: '',
+          instructions: "",
         }}
         onSubmit={handleSubmit}
         validationSchema={validation}
@@ -148,7 +145,7 @@ export default function AddRecipeForm({ categories, ingredients }) {
                     htmlFor={`${id}-photo`}
                   >
                     <MdOutlinePhotoCamera
-                      size={screenWidth >= 1440 ? '82' : '52'}
+                      size={screenWidth >= 1440 ? "82" : "52"}
                     />
                   </label>
                 ) : (
@@ -156,9 +153,9 @@ export default function AddRecipeForm({ categories, ingredients }) {
                     className={css.uploadPhotoField}
                     style={{
                       background: `url(${preview})`,
-                      backgroundSize: 'cover',
-                      backgroundPosition: 'center',
-                      backgroundRepeat: 'no-repeat',
+                      backgroundSize: "cover",
+                      backgroundPosition: "center",
+                      backgroundRepeat: "no-repeat",
                     }}
                     htmlFor={`${id}-photo`}
                   />
@@ -168,7 +165,7 @@ export default function AddRecipeForm({ categories, ingredients }) {
                   id={`${id}-photo`}
                   type="file"
                   className="visually-hidden"
-                  onChange={event => handleChangePhoto(event)}
+                  onChange={(event) => handleChangePhoto(event)}
                 />
               </div>
               <div className={css.mainFields}>
@@ -260,7 +257,7 @@ export default function AddRecipeForm({ categories, ingredients }) {
                       value={values.category}
                       as="select"
                     >
-                      {categories.map(item => {
+                      {categories.map((item) => {
                         return (
                           <option key={item._id} value={item.name}>
                             {item.name}
@@ -301,7 +298,7 @@ export default function AddRecipeForm({ categories, ingredients }) {
                         name="newIngredientName"
                         component="span"
                       />
-                      {ingredients.map(item => {
+                      {ingredients.map((item) => {
                         return (
                           <option
                             className="ingredientsName"
@@ -347,22 +344,22 @@ export default function AddRecipeForm({ categories, ingredients }) {
                           type="button"
                           onClick={() => {
                             if (
-                              values.newIngredientName !== '' &&
-                              values.newIngredientAmount !== ''
+                              values.newIngredientName !== "" &&
+                              values.newIngredientAmount !== ""
                             ) {
                               const itemId = ingredients.find(
-                                item => item.name === values.newIngredientName
+                                (item) => item.name === values.newIngredientName
                               )._id;
                               if (
                                 !values.ingredients.find(
-                                  item => item.id === itemId
+                                  (item) => item.id === itemId
                                 )
                               ) {
                                 push({
-                                  ingredient: itemId,
+                                  id: itemId,
                                   measure: values.newIngredientAmount,
                                 });
-                                setFieldValue('newIngredientAmount', '');
+                                setFieldValue("newIngredientAmount", "");
                               }
                             }
                           }}
@@ -391,14 +388,13 @@ export default function AddRecipeForm({ categories, ingredients }) {
                             <tbody>
                               {values.ingredients.map((item, index) => {
                                 return (
-                                  <tr key={item.ingredient}>
+                                  <tr key={item.id}>
                                     <td
                                       className={`${css.listOfIngredients} ${css.nameColumn}`}
                                     >
                                       {
                                         ingredients.find(
-                                          itemList =>
-                                            itemList._id === item.ingredient
+                                          (itemList) => itemList._id === item.id
                                         ).name
                                       }
                                     </td>
