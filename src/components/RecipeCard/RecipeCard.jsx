@@ -13,7 +13,6 @@ import {
 } from "../../redux/auth/selectors";
 
 export default function RecipeCard({ recipe }) {
-
   const dispatch = useDispatch();
   const token = useSelector(selectToken);
   const isLoggedIn = useSelector(selectIsLoggedIn);
@@ -92,7 +91,7 @@ export default function RecipeCard({ recipe }) {
         </div>
         <div className={css.descSection}>
           <p className={css.desc}>{recipe.description}</p>
-          <p className={css.calories}>~ calories</p> {/*заглушка*/}
+          {recipe.cals ? (<p className={css.calories}> ~{recipe.cals} cals</p>) : (<p className={css.calories}>~ cals</p>)}
         </div>
         <div className={css.actions}>
           <button className={css.learnMore} onClick={() => handleRedirect()}>
