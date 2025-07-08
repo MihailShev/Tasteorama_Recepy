@@ -22,7 +22,7 @@ export default function AuthModal({ onClose }) {
       <div className={css.modal}>
         <button className={css.closeBtn} onClick={onClose}>
           <svg className={css.icon}>
-            <use href="/img/svg/icons.svg#icon-close-mob-menu-btn" />
+            <use href="/img/svg/icons.svg#icon-arr-prew" />
           </svg>
         </button>
         <h2 className={css.title}>Error while saving</h2>

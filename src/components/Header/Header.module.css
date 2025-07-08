@@ -180,6 +180,10 @@
   }
 }
 
+.active {
+  border-bottom: 1px solid white;
+}
+
 /* Desktop and up (≥1440px) */
 @media (min-width: 1440px) {
   .logoText {
