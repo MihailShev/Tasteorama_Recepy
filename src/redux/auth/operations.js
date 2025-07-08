@@ -27,6 +27,7 @@ export const logIn = createAsyncThunk(
     try {
       const response = await api.post("/api/auth/login", credentials);
       const { name, email, favorites, accessToken } = response.data.data;
+      console.log(response.data.data);
 
       localStorage.setItem("accessToken", accessToken);
       localStorage.setItem("user", JSON.stringify({ name, email, favorites }));
