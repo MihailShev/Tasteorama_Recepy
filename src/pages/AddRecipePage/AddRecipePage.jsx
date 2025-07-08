@@ -1,7 +1,7 @@
-import axios from 'axios';
-import { useState, useMemo } from 'react';
-import AddRecipeForm from '../../components/AddRecipeForm/AddRecipeForm.jsx';
-import { Navigate } from 'react-router';
+import { useState, useMemo } from "react";
+import AddRecipeForm from "../../components/AddRecipeForm/AddRecipeForm.jsx";
+import { Navigate } from "react-router";
+import { api } from "../../redux/index.js";
 
 export default function AddRecipePage() {
   const [isError, setIsError] = useState(false);
@@ -11,12 +11,12 @@ export default function AddRecipePage() {
   useMemo(() => {
     try {
       setIsError(false);
-      axios
-        .get('https://recepy-api.onrender.com/api/categories/all')
-        .then(info => setCategoryList(info.data.data));
-      axios
-        .get('https://recepy-api.onrender.com/api/ingredients')
-        .then(info => setIngredientList(info.data.data));
+      api
+        .get("/api/categories/all")
+        .then((info) => setCategoryList(info.data.data));
+      api
+        .get("/api/ingredients")
+        .then((info) => setIngredientList(info.data.data));
     } catch {
       setIsError(true);
     }

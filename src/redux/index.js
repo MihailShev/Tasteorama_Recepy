@@ -28,10 +28,12 @@ api.interceptors.response.use(
     ) {
       original._retry = true;
       try {
-        const { data } = await api.post("/api/auth/refresh");
+        const response = await api.post("/api/auth/refresh");
+        const { accessToken } = response.data;
+        console.log(accessToken);
         const user = JSON.parse(localStorage.getItem("user"));
-        storeRef?.dispatch(setCredentials({ user, token: data.accessToken }));
-        original.headers.Authorization = `Bearer ${data.accessToken}`;
+        storeRef?.dispatch(setCredentials({ user, token: accessToken }));
+        original.headers.Authorization = `Bearer ${accessToken}`;
         return api(original);
       } catch {
         storeRef?.dispatch(logout());

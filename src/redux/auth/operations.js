@@ -27,7 +27,6 @@ export const logIn = createAsyncThunk(
     try {
       const response = await api.post("/api/auth/login", credentials);
       const { name, email, favorites, accessToken } = response.data.data;
-      console.log(response.data.data);
 
       localStorage.setItem("accessToken", accessToken);
       localStorage.setItem("user", JSON.stringify({ name, email, favorites }));
@@ -59,7 +58,8 @@ export const logOut = createAsyncThunk("auth/logout", async (_, thunkAPI) => {
 export const refresh = createAsyncThunk("auth/refresh", async (_, thunkAPI) => {
   try {
     const response = await api.post("/api/auth/refresh");
-    const { accessToken } = response.data;
+    const { accessToken } = response.data.data;
+    console.log(accessToken);
 
     localStorage.setItem("accessToken", accessToken);
     const user = JSON.parse(localStorage.getItem("user"));

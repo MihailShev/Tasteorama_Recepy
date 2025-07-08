@@ -1,23 +1,19 @@
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import axios from "axios";
+import { api } from "../../redux";
 
-const usePaginatedRecipes = endpoint => {
+const usePaginatedRecipes = (endpoint) => {
   const [recipes, setRecipes] = useState([]);
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
   const [loading, setLoading] = useState(false);
   const [totallItems, setTotalItems] = useState(null);
-  const token = useSelector(state => state.auth.token);
+  const token = useSelector((state) => state.auth.token);
 
-  const fetchRecipes = async currentPage => {
+  const fetchRecipes = async (currentPage) => {
     try {
       setLoading(true);
-      const response = await axios.get(`https://recepy-api.onrender.com/api/${endpoint}?page=${currentPage}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await api.get(`/api/${endpoint}?page=${currentPage}`);
 
       const apiData = response.data.data;
       const newRecipes = apiData.data;
@@ -27,7 +23,7 @@ const usePaginatedRecipes = endpoint => {
       if (currentPage === 1) {
         setRecipes(newRecipes);
       } else {
-        setRecipes(prev => [...prev, ...newRecipes]);
+        setRecipes((prev) => [...prev, ...newRecipes]);
       }
 
       setHasMore(next);
