@@ -2,9 +2,9 @@ import RecipeCard from "../RecipeCard/RecipeCard";
 import css from "./RecipesList.module.css";
 
 export default function RecipesList({ recipes, totallItems }) {
-  if (!recipes || recipes.length === 0) {
-    return <p className={css.noRecipes}>No recipes available.</p>;
-  }
+  // if (!recipes || recipes.length === 0) {
+  //   return <p className={css.noRecipes}>No recipes available.</p>;
+  // }
 
   return (
     <>

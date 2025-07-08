@@ -8,6 +8,8 @@ import {
 } from "../../redux/filters/operations.js";
 import {
   selectItems,
+  selectPage,
+  selectHasNextPage,
   selectRecipesError,
   selectRecipesLoading,
 } from "../../redux/recipes/selectors";
@@ -31,6 +33,8 @@ import {
   setSelectedQuery,
 } from "../../redux/filters/slice.js";
 import Filters from "../../components/Filters/Filters.jsx";
+import Loader from "../../components/Loader/Loader.jsx";
+
 
 export default function MainPage() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -38,6 +42,8 @@ export default function MainPage() {
   const recipes = useSelector(selectItems);
   const recipesIsLoading = useSelector(selectRecipesLoading);
   const recipesIsError = useSelector(selectRecipesError);
+  const currentPage = useSelector(selectPage);
+  const hasNextPage = useSelector(selectHasNextPage);
   const ingredient = useSelector(selectSelectedIngredient);
   const category = useSelector(selectSelectedCategory);
   const title = useSelector(selectSelectedQuery);
@@ -46,6 +52,11 @@ export default function MainPage() {
   const filtersCategories = useSelector(selectCategories);
 
   const didInit = useRef(false);
+
+  useEffect(() => {
+    dispatch(fetchCategories());
+    dispatch(fetchIngredients());
+  }, [dispatch]);
 
   useEffect(() => {
     const categoryParam = searchParams.get("category") || "";
@@ -64,8 +75,7 @@ export default function MainPage() {
       })
     );
 
-    dispatch(fetchCategories());
-    dispatch(fetchIngredients());
+
     setTimeout(() => {
       didInit.current = true;
     }, 0);
@@ -80,6 +90,20 @@ export default function MainPage() {
 
     setSearchParams(params);
   }, [category, ingredient, title, setSearchParams]);
+
+  const handleLoadMore =  () => {
+
+    if (!recipesIsLoading && hasNextPage) {
+       dispatch(fetchRecipes({
+        category: category,
+        ingredient: ingredient,
+        title: title,
+        page: currentPage + 1,
+      }));
+
+    }
+
+  }
   return (
     <>
       <SearchBox />
@@ -88,14 +112,9 @@ export default function MainPage() {
           categories={filtersCategories}
           ingredients={filtersIngredients}
         />
-
-        {recipesIsLoading ? (
-          <p>Loading...</p>
-        ) : (
-          <RecipesList recipes={recipes} />
-        )}
-
-        <LoadMoreBtn />
+        <RecipesList recipes={recipes} />
+        {recipesIsLoading && <Loader color={'#3a2016'}/>}
+        <LoadMoreBtn onLoad={handleLoadMore}/>
       </div>
     </>
   );
