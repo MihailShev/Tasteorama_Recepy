@@ -10,13 +10,10 @@ import {
   selectItems,
   selectPage,
   selectHasNextPage,
-  selectRecipesError,
   selectRecipesLoading,
 } from "../../redux/recipes/selectors";
 import {
   selectCategories,
-  selectFiltersError,
-  selectFiltersLoading,
   selectIngredients,
   selectSelectedCategory,
   selectSelectedIngredient,
@@ -41,7 +38,6 @@ export default function MainPage() {
   const dispatch = useDispatch();
   const recipes = useSelector(selectItems);
   const recipesIsLoading = useSelector(selectRecipesLoading);
-  const recipesIsError = useSelector(selectRecipesError);
   const currentPage = useSelector(selectPage);
   const hasNextPage = useSelector(selectHasNextPage);
   const ingredient = useSelector(selectSelectedIngredient);
@@ -114,7 +110,7 @@ export default function MainPage() {
         />
         <RecipesList recipes={recipes} />
         {recipesIsLoading && <Loader color={'#3a2016'}/>}
-        <LoadMoreBtn onLoad={handleLoadMore}/>
+       {hasNextPage && <LoadMoreBtn onLoad={handleLoadMore}/>}
       </div>
     </>
   );
