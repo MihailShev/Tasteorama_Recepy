@@ -81,25 +81,6 @@ export default function RegistrationForm() {
         >
           {({ errors, touched }) => (
             <Form className={css.form}>
-              <label className={css.label} htmlFor="email">
-                Enter your email address
-                <Field
-                  name="email"
-                  type="email"
-                  id="email"
-                  placeholder="email@gmail.com"
-                  className={`${css.field} ${
-                    errors.email && touched.email ? css.errorField : ""
-                  }`}
-                />
-                <div
-                  className={`${css.errorMessage} ${
-                    errors.email && touched.email ? css.visible : ""
-                  }`}
-                >
-                  {errors.email}
-                </div>
-              </label>
               <label className={css.label} htmlFor="name">
                 Enter your name
                 <Field
@@ -117,6 +98,25 @@ export default function RegistrationForm() {
                   }`}
                 >
                   {errors.name}
+                </div>
+              </label>
+              <label className={css.label} htmlFor="email">
+                Enter your email address
+                <Field
+                  name="email"
+                  type="email"
+                  id="email"
+                  placeholder="email@gmail.com"
+                  className={`${css.field} ${
+                    errors.email && touched.email ? css.errorField : ""
+                  }`}
+                />
+                <div
+                  className={`${css.errorMessage} ${
+                    errors.email && touched.email ? css.visible : ""
+                  }`}
+                >
+                  {errors.email}
                 </div>
               </label>
               <label className={css.label} htmlFor="password">
