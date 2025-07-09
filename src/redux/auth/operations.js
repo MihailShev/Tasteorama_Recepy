@@ -61,9 +61,7 @@ export const refresh = createAsyncThunk("auth/refresh", async (_, thunkAPI) => {
     const { accessToken } = response.data.data;
 
     localStorage.setItem("accessToken", accessToken);
-    const user = JSON.parse(localStorage.getItem("user"));
     return {
-      user,
       token: accessToken,
     };
   } catch (error) {
@@ -78,8 +76,12 @@ export const addFavorite = createAsyncThunk(
     try {
       const response = await api.post(`/api/recipes/favorites/${recipeId}`);
       return response.data.data._id;
-    } catch (err) {
-      return thunkAPI.rejectWithValue(err.response?.data || err.message);
+    } catch (error) {
+      return thunkAPI.rejectWithValue({
+        status: error.response?.status,
+        data: error.response?.data,
+        message: error.message,
+      });
     }
   }
 );
@@ -89,8 +91,12 @@ export const removeFavorite = createAsyncThunk(
     try {
       const response = await api.delete(`/api/recipes/favorites/${recipeId}`);
       return response.data.data.recipeId;
-    } catch (err) {
-      return thunkAPI.rejectWithValue(err.response?.data || err.message);
+    } catch (error) {
+      return thunkAPI.rejectWithValue({
+        status: error.response?.status,
+        data: error.response?.data,
+        message: error.message,
+      });
     }
   }
 );
