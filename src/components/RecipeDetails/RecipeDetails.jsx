@@ -27,7 +27,7 @@ export default function RecipeDetails({
   function transformImageUrl(url) {
     const baseUrl = "https://ftp.goit.study/img/so-yummy/preview/";
     if (url.startsWith(baseUrl)) {
-      const rest = url.slice(baseUrl.length); // видаляє базу
+      const rest = url.slice(baseUrl.length);
       return `${baseUrl}large/${rest}`;
     }
     return url;
@@ -38,9 +38,9 @@ export default function RecipeDetails({
     recipe?._id &&
     user.favorites.includes(String(recipe._id));
 
-  const handleOpenSaveModal = () => {
-    setShowSaveModal(true); // ← Показываем модалку
-  };
+  // const handleOpenSaveModal = () => {
+  //   setShowSaveModal(true); // ← Показываем модалку
+  // };
 
   async function onAdd(recipe) {
     try {
@@ -134,57 +134,48 @@ export default function RecipeDetails({
                   </li>
                 </ul>
               </div>
-              {isLoggedIn ? (
-                isFavorite ? (
-                  <button
-                    onClick={() => onDelete(recipe)}
-                    className={clsx(style.btn, style.remove, {
-                      [style.loading]: isLoading,
-                    })}
-                  >
-                    Remove{" "}
-                    <svg className={style.save} width="24" height="24">
-                      <use
-                        className={style.svg}
-                        href="/img/svg/icons.svg#icon-delete"
-                      ></use>
-                    </svg>
-                  </button>
-                ) : (
-                  <button
-                    onClick={() => onAdd(recipe)}
-                    className={clsx(style.btn, { [style.loading]: isLoading })}
-                  >
-                    Save{" "}
-                    <svg className={style.save} width="24" height="24">
-                      <use
-                        className={style.svg}
-                        href="/img/svg/icons.svg#icon-save"
-                      ></use>
-                    </svg>
-                  </button>
-                )
-              ) : (
-                <button
-                  onClick={handleOpenSaveModal} // ← Показываем модалку
-                  className={clsx(style.btn, { [style.loading]: isLoading })}
-                >
-                  Save
-                </button>
-              )}
-
-              {/* <button onClick={() => onAdd(recipe)} className={style.btn}>
-                Save{" "}
-                <svg className={style.save} width="24" height="24">
-                  <use
-                    className={style.svg}
-                    href="./public/img/svg/icons.svg#icon-save"
-                  ></use>
-                </svg>
-              </button>
-              <button onClick={() => onDelete(recipe)} className={style.remove}>
-                Remove
-              </button> */}
+              {
+                isLoggedIn &&
+                  (isFavorite ? (
+                    <button
+                      onClick={() => onDelete(recipe)}
+                      className={clsx(style.btn, style.remove, {
+                        [style.loading]: isLoading,
+                      })}
+                    >
+                      Remove{" "}
+                      <svg className={style.save} width="24" height="24">
+                        <use
+                          className={style.svg}
+                          href="/img/svg/icons.svg#icon-delete"
+                        ></use>
+                      </svg>
+                    </button>
+                  ) : (
+                    <button
+                      onClick={() => onAdd(recipe)}
+                      className={clsx(style.btn, {
+                        [style.loading]: isLoading,
+                      })}
+                    >
+                      Save{" "}
+                      <svg className={style.save} width="24" height="24">
+                        <use
+                          className={style.svg}
+                          href="/img/svg/icons.svg#icon-save"
+                        ></use>
+                      </svg>
+                    </button>
+                  ))
+                // ) : (
+                //   <button
+                //     onClick={handleOpenSaveModal} // ← Показываем модалку
+                //     className={clsx(style.btn, { [style.loading]: isLoading })}
+                //   >
+                //     Save
+                //   </button>
+                // )
+              }
             </div>
 
             <div className={style.about}>
@@ -196,7 +187,7 @@ export default function RecipeDetails({
                 <h2 className={style.subtitle}>Ingredients:</h2>
                 <ul className={`${style.text} ${style.ingredients}`}>
                   {recipe.ingredients.map((ingredient) => (
-                    <li key={ingredient._id} className={style.ingredient}>
+                    <li key={ingredient.name} className={style.ingredient}>
                       {ingredient.name} — {ingredient.measure}
                     </li>
                   ))}
