@@ -34,16 +34,11 @@ export default function LoginForm() {
         autoClose: 5000,
         pauseOnHover: true,
       });
-    }
-  }, [error]);
-
-  useEffect(() => {
-    return () => {
       dispatch(clearAuthError());
-    };
-  }, [dispatch]);
+    }
+  }, [error, dispatch]); 
 
-  const handleSubmit = async (values, actions) => {
+ const handleSubmit = async (values, actions) => {
     try {
       await dispatch(logIn(values)).unwrap();
       actions.resetForm();
