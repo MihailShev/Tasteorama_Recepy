@@ -22,8 +22,17 @@ export default function RecipeDetails({
   const token = useSelector(selectToken);
   const isLoggedIn = useSelector(selectIsLoggedIn);
   const dispatch = useDispatch();
-
   const user = useSelector(selectUser);
+
+  function transformImageUrl(url) {
+    const baseUrl = "https://ftp.goit.study/img/so-yummy/preview/";
+    if (url.startsWith(baseUrl)) {
+      const rest = url.slice(baseUrl.length); // видаляє базу
+      return `${baseUrl}large/${rest}`;
+    }
+    return url;
+  }
+
   const isFavorite =
     Array.isArray(user?.favorites) &&
     recipe?._id &&
@@ -94,7 +103,7 @@ export default function RecipeDetails({
             <div className={style.img}>
               {recipe.thumb && (
                 <img
-                  src={recipe.thumb}
+                  src={transformImageUrl(recipe.thumb)}
                   alt={recipe.title}
                   width={1226}
                   height={624}
@@ -118,7 +127,10 @@ export default function RecipeDetails({
                   </li>
                   <li className={style.item}>
                     Caloric content:{" "}
-                    <span className={style.span}>Caloric content</span>
+                    <span className={style.span}>
+                      {" "}
+                      ~ {recipe.cals && recipe.cals} cals
+                    </span>
                   </li>
                 </ul>
               </div>

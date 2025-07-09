@@ -172,6 +172,7 @@
   .nohero {
     display: flex;
     gap: 24px;
+    justify-content: space-between;
   }
   .info {
     order: 2;
