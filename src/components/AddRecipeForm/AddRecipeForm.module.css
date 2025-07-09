@@ -4,7 +4,7 @@
 }
 
 .titleOfSection {
-  font-family: 'Montserrat', sans-serif;
+  font-family: "Montserrat", sans-serif;
   font-weight: 600;
   font-size: 40px;
   color: #000;
@@ -18,7 +18,7 @@
 }
 
 .uploadPhoto {
-  font-family: 'Montserrat', sans-serif;
+  font-family: "Montserrat", sans-serif;
   font-weight: 600;
   font-size: 24px;
   color: #000;
@@ -40,7 +40,7 @@
 }
 
 .generalInformation {
-  font-family: 'Montserrat', sans-serif;
+  font-family: "Montserrat", sans-serif;
   font-weight: 600;
   font-size: 24px;
   color: #000;
@@ -48,7 +48,7 @@
 }
 
 .generalInfoLabel {
-  font-family: 'Montserrat', sans-serif;
+  font-family: "Montserrat", sans-serif;
   font-weight: 400;
   font-size: 18px;
   color: #000;
@@ -67,7 +67,7 @@
   font-weight: 400;
   font-size: 18px;
   color: #000;
-  font-family: 'Montserrat', sans-serif;
+  font-family: "Montserrat", sans-serif;
   margin-top: 8px;
   resize: none;
   transition: border 250ms linear, box-shadow 250ms linear;
@@ -86,7 +86,7 @@
 }
 
 .inlineGeneralInfoLabel {
-  font-family: 'Montserrat', sans-serif;
+  font-family: "Montserrat", sans-serif;
   font-weight: 400;
   font-size: 18px;
   color: #000;
@@ -112,7 +112,7 @@
   font-weight: 400;
   font-size: 18px;
   color: #000;
-  font-family: 'Montserrat', sans-serif;
+  font-family: "Montserrat", sans-serif;
   text-decoration: none;
 }
 
@@ -130,7 +130,7 @@
   font-size: 16px;
   text-align: center;
   color: #fff;
-  font-family: 'Montserrat', sans-serif;
+  font-family: "Montserrat", sans-serif;
   margin-top: 32px;
   transition: background 150ms linear, box-shadow 250ms linear;
 }
@@ -181,7 +181,7 @@
   font-weight: 600;
   font-size: 24px;
   color: #000;
-  font-family: 'Montserrat', sans-serif;
+  font-family: "Montserrat", sans-serif;
   margin-top: 40px;
   margin-bottom: 0px;
 }
@@ -194,7 +194,7 @@
   font-weight: 400;
   font-size: 18px;
   color: #000;
-  font-family: 'Montserrat', sans-serif;
+  font-family: "Montserrat", sans-serif;
   box-sizing: border-box;
   resize: none;
   transition: border 250ms linear, box-shadow 250ms linear;
@@ -213,10 +213,18 @@
   font-weight: 600;
   font-size: 16px;
   color: #fff;
-  font-family: 'Montserrat', sans-serif;
+  font-family: "Montserrat", sans-serif;
   margin-top: 40px;
   transition: background 150ms linear, box-shadow 250ms linear;
   margin-bottom: 48px;
+}
+
+.success {
+  background-color: #28a745 !important;
+}
+
+.error {
+  background-color: #dc3545 !important;
 }
 
 .submitBtn:hover {

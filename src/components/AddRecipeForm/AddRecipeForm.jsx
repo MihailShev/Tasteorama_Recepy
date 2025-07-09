@@ -7,11 +7,13 @@ import * as Yup from "yup";
 import { useNavigate } from "react-router";
 import { toast, ToastContainer } from "react-toastify";
 import { api } from "../../redux";
+import { ClipLoader } from "react-spinners";
 
 export default function AddRecipeForm({ categories, ingredients }) {
   const [preview, setPreview] = useState(null);
   const [selectedFile, setSelectedFile] = useState("");
   const [screenWidth, setScreenWidth] = useState(window.innerWidth);
+  const [submitStatus, setSubmitStatus] = useState("");
   const id = useId();
   const navigate = useNavigate();
 
@@ -28,37 +30,25 @@ export default function AddRecipeForm({ categories, ingredients }) {
   }, []);
 
   const validation = Yup.object().shape({
-    title: Yup.string("Title must be a string!")
-      .max(64, "Too long!")
-      .required("Required!"),
-    description: Yup.string("Description must be a string!")
-      .max(200, "Too long!")
-      .required("Required!"),
+    title: Yup.string("Title must be a string!").max(64, "Too long!").required("Required!"),
+    description: Yup.string("Description must be a string!").max(200, "Too long!").required("Required!"),
     time: Yup.number("Cooking time must be a number!")
       .min(1, "Cannot be less than or equal to 0")
       .max(360, "Too long!")
       .required("Required!"),
-    cals: Yup.number("Calories must be a number!")
-      .min(1, "Cannot be less than or equal to 0")
-      .max(10000, "Too long!"),
+    cals: Yup.number("Calories must be a number!").min(1, "Cannot be less than or equal to 0").max(10000, "Too long!"),
     category: Yup.string("Category must be a string!").required("Required!"),
     newIngredientName: Yup.string("Name of ingredient must be a string!"),
     newIngredientAmount: Yup.string("Measure must be a string!").trim(),
     ingredients: Yup.array()
       .of(
         Yup.object({
-          id: Yup.string("Ingredients id must be a string!")
-            .length(24, "Too long!")
-            .required("Required!"),
-          measure: Yup.string("Measure must be a string!")
-            .trim()
-            .required("Required!"),
+          id: Yup.string("Ingredients id must be a string!").length(24, "Too long!").required("Required!"),
+          measure: Yup.string("Measure must be a string!").trim().required("Required!"),
         })
       )
       .required("Required!"),
-    instructions: Yup.string("Instructions must be a string!")
-      .max(1200, "Too long!")
-      .required("Required!"),
+    instructions: Yup.string("Instructions must be a string!").max(1200, "Too long!").required("Required!"),
   });
 
   function handleChangePhoto(event) {
@@ -80,8 +70,6 @@ export default function AddRecipeForm({ categories, ingredients }) {
     }
   }
 
-  const notify = (message) => toast.error(message);
-
   async function handleSubmit(values, actions) {
     delete values.newIngredientName;
     delete values.newIngredientAmount;
@@ -96,21 +84,44 @@ export default function AddRecipeForm({ categories, ingredients }) {
         formData.append("ingredients", JSON.stringify(values.ingredients));
       }
     }
+    const toastId = toast.loading("Publishing…");
     try {
       const response = await api.post("/api/recipes", formData);
+      toast.update(toastId, {
+        render: "Recipe has been published!✅",
+        type: "success",
+        isLoading: false, // отключает спиннер
+        autoClose: 3000,
+        closeOnClick: true,
+      });
+
+      setSubmitStatus("success");
+
+      setTimeout(() => setSubmitStatus(""), 3000);
       navigate(`/recipes/${response.data.data._id}`, { replace: true });
     } catch (error) {
+      toast.update(toastId, {
+        render: `❌ Failed to create recipe.`,
+        type: "error",
+        isLoading: false,
+        autoClose: 5000,
+        closeOnClick: true,
+      });
+
+      setSubmitStatus("error");
+
+      setTimeout(() => setSubmitStatus(""), 3000);
       actions.resetForm();
       setPreview(null);
       setSelectedFile("");
-      notify(error.message);
+      error.message;
     }
   }
 
   return (
-    <div className="container">
+    <div className='container'>
       <ToastContainer
-        position="top-center"
+        position='top-center'
         autoClose={3000}
         hideProgressBar={true}
         newestOnTop={false}
@@ -133,19 +144,14 @@ export default function AddRecipeForm({ categories, ingredients }) {
         onSubmit={handleSubmit}
         validationSchema={validation}
       >
-        {({ values, setFieldValue, errors, touched }) => (
+        {({ values, setFieldValue, errors, touched, isSubmitting }) => (
           <Form className={css.addRecipeForm}>
             <div className={css.wrapper}>
               <div className={css.desktopPhoto}>
                 <h3 className={css.uploadPhoto}>Upload Photo</h3>
                 {!preview ? (
-                  <label
-                    className={css.uploadPhotoField}
-                    htmlFor={`${id}-photo`}
-                  >
-                    <MdOutlinePhotoCamera
-                      size={screenWidth >= 1440 ? "82" : "52"}
-                    />
+                  <label className={css.uploadPhotoField} htmlFor={`${id}-photo`}>
+                    <MdOutlinePhotoCamera size={screenWidth >= 1440 ? "82" : "52"} />
                   </label>
                 ) : (
                   <label
@@ -160,11 +166,11 @@ export default function AddRecipeForm({ categories, ingredients }) {
                   />
                 )}
                 <Field
-                  name="photo"
+                  name='photo'
                   id={`${id}-photo`}
-                  type="file"
-                  className="visually-hidden"
-                  onChange={(event) => handleChangePhoto(event)}
+                  type='file'
+                  className='visually-hidden'
+                  onChange={event => handleChangePhoto(event)}
                 />
               </div>
               <div className={css.mainFields}>
@@ -173,90 +179,58 @@ export default function AddRecipeForm({ categories, ingredients }) {
                   Recipe Title
                 </label>
                 <Field
-                  name="title"
+                  name='title'
                   id={`${id}-title`}
-                  className={`${css.enterGeneralInfo} ${
-                    errors.title && touched.title && css.errorField
-                  }`}
-                  placeholder="Enter the name of your recipe"
+                  className={`${css.enterGeneralInfo} ${errors.title && touched.title && css.errorField}`}
+                  placeholder='Enter the name of your recipe'
                 />
-                <ErrorMessage
-                  className={css.errorMsg}
-                  name="title"
-                  component="span"
-                />
-                <label
-                  className={css.generalInfoLabel}
-                  htmlFor={`${id}-description`}
-                >
+                <ErrorMessage className={css.errorMsg} name='title' component='span' />
+                <label className={css.generalInfoLabel} htmlFor={`${id}-description`}>
                   Recipe Description
                 </label>
                 <Field
-                  name="description"
+                  name='description'
                   id={`${id}-description`}
-                  className={`${css.enterGeneralInfo} ${
-                    errors.description && touched.description && css.errorField
-                  }`}
-                  rows="6"
-                  as="textarea"
-                  placeholder="Enter a brief description of your recipe"
+                  className={`${css.enterGeneralInfo} ${errors.description && touched.description && css.errorField}`}
+                  rows='6'
+                  as='textarea'
+                  placeholder='Enter a brief description of your recipe'
                 />
-                <ErrorMessage
-                  className={css.errorMsg}
-                  name="description"
-                  component="span"
-                />
-                <label
-                  className={css.generalInfoLabel}
-                  htmlFor={`${id}-cookingTime`}
-                >
+                <ErrorMessage className={css.errorMsg} name='description' component='span' />
+                <label className={css.generalInfoLabel} htmlFor={`${id}-cookingTime`}>
                   Cooking time in minutes
                 </label>
                 <Field
-                  name="time"
+                  name='time'
                   id={`${id}-cookingTime`}
-                  className={`${css.enterGeneralInfo} ${
-                    errors.time && touched.time && css.errorField
-                  }`}
-                  placeholder="10"
-                  type="number"
+                  className={`${css.enterGeneralInfo} ${errors.time && touched.time && css.errorField}`}
+                  placeholder='10'
+                  type='number'
                 />
-                <ErrorMessage
-                  className={css.errorMsg}
-                  name="time"
-                  component="span"
-                />
+                <ErrorMessage className={css.errorMsg} name='time' component='span' />
                 <div className={css.inlineFields}>
                   <label className={css.inlineGeneralInfoLabel}>
                     Calories
                     <Field
-                      name="cals"
+                      name='cals'
                       id={`${id}-calories`}
-                      className={`${css.enterGeneralInfo} ${
-                        errors.cals && touched.cals && css.errorField
-                      }`}
-                      placeholder="150 cals"
-                      type="number"
+                      className={`${css.enterGeneralInfo} ${errors.cals && touched.cals && css.errorField}`}
+                      placeholder='150 cals'
+                      type='number'
                     />
-                    <ErrorMessage
-                      className={css.errorMsg}
-                      name="cals"
-                      component="span"
-                    />
+                    <ErrorMessage className={css.errorMsg} name='cals' component='span' />
                   </label>
 
                   <label className={css.inlineGeneralInfoLabel}>
                     Category
                     <Field
-                      name="category"
+                      name='category'
                       id={`${id}-category`}
-                      className={`${css.enterGeneralInfo} ${
-                        errors.category && touched.category && css.errorField
-                      }`}
+                      className={`${css.enterGeneralInfo} ${errors.category && touched.category && css.errorField}`}
                       value={values.category}
-                      as="select"
+                      as='select'
                     >
-                      {categories.map((item) => {
+                      {categories.map(item => {
                         return (
                           <option key={item._id} value={item.name}>
                             {item.name}
@@ -264,96 +238,56 @@ export default function AddRecipeForm({ categories, ingredients }) {
                         );
                       })}
                     </Field>
-                    <ErrorMessage
-                      className={css.errorMsg}
-                      name="category"
-                      component="span"
-                    />
+                    <ErrorMessage className={css.errorMsg} name='category' component='span' />
                   </label>
                 </div>
-                <h3
-                  className={`${css.generalInformation} ${css.ingredientsTitle}`}
-                >
-                  Ingredients
-                </h3>
+                <h3 className={`${css.generalInformation} ${css.ingredientsTitle}`}>Ingredients</h3>
                 <div className={css.ingredientSection}>
-                  <label
-                    className={`${css.generalInfoLabel} ${css.nameOfIngredient}`}
-                    htmlFor={`${id}-ingredientName`}
-                  >
+                  <label className={`${css.generalInfoLabel} ${css.nameOfIngredient}`} htmlFor={`${id}-ingredientName`}>
                     Name
                     <Field
-                      name="newIngredientName"
+                      name='newIngredientName'
                       id={`${id}-ingredientName`}
                       className={`${css.enterGeneralInfo} ${
-                        errors.newIngredientName &&
-                        touched.newIngredientName &&
-                        css.errorField
+                        errors.newIngredientName && touched.newIngredientName && css.errorField
                       }`}
-                      as="select"
+                      as='select'
                     >
-                      <ErrorMessage
-                        className={css.errorMsg}
-                        name="newIngredientName"
-                        component="span"
-                      />
-                      {ingredients.map((item) => {
+                      <ErrorMessage className={css.errorMsg} name='newIngredientName' component='span' />
+                      {ingredients.map(item => {
                         return (
-                          <option
-                            className="ingredientsName"
-                            id={item._id}
-                            key={item._id}
-                            value={item.name}
-                          >
+                          <option className='ingredientsName' id={item._id} key={item._id} value={item.name}>
                             {item.name}
                           </option>
                         );
                       })}
                     </Field>
                   </label>
-                  <label
-                    className={css.generalInfoLabel}
-                    htmlFor={`${id}-ingredientAmount`}
-                  >
+                  <label className={css.generalInfoLabel} htmlFor={`${id}-ingredientAmount`}>
                     Amount
                     <Field
-                      name="newIngredientAmount"
+                      name='newIngredientAmount'
                       id={`${id}-ingredientAmount`}
                       className={`${css.enterGeneralInfo} ${
-                        errors.newIngredientAmount &&
-                        touched.newIngredientAmount &&
-                        css.errorField
+                        errors.newIngredientAmount && touched.newIngredientAmount && css.errorField
                       }`}
-                      placeholder="100g"
+                      placeholder='100g'
                     />
-                    <ErrorMessage
-                      className={css.errorMsg}
-                      name="newIngredientAmount"
-                      component="span"
-                    />
+                    <ErrorMessage className={css.errorMsg} name='newIngredientAmount' component='span' />
                   </label>
                 </div>
-                <FieldArray name="ingredients">
+                <FieldArray name='ingredients'>
                   {({ push, remove }) => {
                     return (
                       <div className={css.additionalForIngredients}>
                         <button
-                          id="addIngredientBtn"
+                          id='addIngredientBtn'
                           className={css.addIngredient}
-                          type="button"
+                          type='button'
                           onClick={() => {
-                            if (
-                              values.newIngredientName !== "" &&
-                              values.newIngredientAmount !== ""
-                            ) {
-                              const itemId = ingredients.find(
-                                (item) => item.name === values.newIngredientName
-                              )._id;
-                              if (
-                                !values.ingredients.find(
-                                  (item) => item.id === itemId
-                                )
-                              ) {
+                            if (values.newIngredientName !== "" && values.newIngredientAmount !== "") {
+                              const itemId = ingredients.find(item => item.name === values.newIngredientName)._id;
+                              if (!values.ingredients.find(item => item.id === itemId)) {
                                 push({
                                   id: itemId,
                                   measure: values.newIngredientAmount,
@@ -365,48 +299,25 @@ export default function AddRecipeForm({ categories, ingredients }) {
                         >
                           Add new Ingredient
                         </button>
-                        {(screenWidth < 768
-                          ? values.ingredients.length > 0
-                          : true) && (
+                        {(screenWidth < 768 ? values.ingredients.length > 0 : true) && (
                           <table className={css.tableOfIngredients}>
                             <thead>
                               <tr>
-                                <th
-                                  className={`${css.tableHeader} ${css.nameColumn}`}
-                                >
-                                  Name:
-                                </th>
-                                <th
-                                  className={`${css.tableHeader} ${css.amountColumn}`}
-                                >
-                                  Amount:
-                                </th>
-                                <th className="visually-hidden">D</th>
+                                <th className={`${css.tableHeader} ${css.nameColumn}`}>Name:</th>
+                                <th className={`${css.tableHeader} ${css.amountColumn}`}>Amount:</th>
+                                <th className='visually-hidden'>D</th>
                               </tr>
                             </thead>
                             <tbody>
                               {values.ingredients.map((item, index) => {
                                 return (
                                   <tr key={item.id}>
-                                    <td
-                                      className={`${css.listOfIngredients} ${css.nameColumn}`}
-                                    >
-                                      {
-                                        ingredients.find(
-                                          (itemList) => itemList._id === item.id
-                                        ).name
-                                      }
+                                    <td className={`${css.listOfIngredients} ${css.nameColumn}`}>
+                                      {ingredients.find(itemList => itemList._id === item.id).name}
                                     </td>
-                                    <td
-                                      className={`${css.listOfIngredients} ${css.amountColumn}`}
-                                    >
-                                      {item.measure}
-                                    </td>
+                                    <td className={`${css.listOfIngredients} ${css.amountColumn}`}>{item.measure}</td>
                                     <td className={css.deleteIngredientIcon}>
-                                      <button
-                                        type="button"
-                                        onClick={() => remove(index)}
-                                      >
+                                      <button type='button' onClick={() => remove(index)}>
                                         <RiDeleteBin4Line size={16} />
                                       </button>
                                     </td>
@@ -421,29 +332,28 @@ export default function AddRecipeForm({ categories, ingredients }) {
                   }}
                 </FieldArray>
                 <h3 className={css.instructionsHeader}>Instructions</h3>
-                <label
-                  className={css.generalInfoLabel}
-                  htmlFor={`${id}-instructions`}
-                />
+                <label className={css.generalInfoLabel} htmlFor={`${id}-instructions`} />
                 <Field
-                  name="instructions"
+                  name='instructions'
                   id={`${id}-instructions`}
                   className={`${css.instructionsField} ${
-                    errors.instructions &&
-                    touched.instructions &&
-                    css.errorField
+                    errors.instructions && touched.instructions && css.errorField
                   }`}
-                  rows="6"
-                  as="textarea"
-                  placeholder="Enter a text"
+                  rows='6'
+                  as='textarea'
+                  placeholder='Enter a text'
                 />
-                <ErrorMessage
-                  className={css.errorMsg}
-                  name="instructions"
-                  component="span"
-                />
-                <button className={css.submitBtn} type="submit">
-                  Publish Recipe
+                <ErrorMessage className={css.errorMsg} name='instructions' component='span' />
+                <button
+                  className={`
+    ${css.submitBtn}
+    ${submitStatus === "success" ? css.success : ""}
+    ${submitStatus === "error" ? css.error : ""}
+  `}
+                  type='submit'
+                  disabled={isSubmitting}
+                >
+                  {isSubmitting ? <ClipLoader color='#fff' size={24} /> : "Publish Recipe"}
                 </button>
               </div>
             </div>
