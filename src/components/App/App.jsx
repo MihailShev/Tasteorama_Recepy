@@ -1,29 +1,30 @@
 import { Route, Routes } from "react-router-dom";
-import { Suspense } from "react";
+import { lazy, Suspense } from "react";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import MainPage from "../../pages/MainPage/MainPage.jsx";
-import RecipeViewPage from "../../pages/RecipeViewPage/RecipeViewPage.jsx";
-import AddRecipePage from "../../pages/AddRecipePage/AddRecipePage.jsx";
-import ProfilePage from "../../pages/ProfilePage/ProfilePage.jsx";
-import AuthPage from "../../pages/AuthPage/AuthPage.jsx";
 import Layout from "../Layout/Layout.jsx";
 import NotFound from "../NotFound/NotFound.jsx";
 import PrivateRoute from "../PrivateRoute/PrivateRoute.jsx";
+
+const MainPage = lazy(() => import("../../pages/MainPage/MainPage.jsx"));
+const RecipeViewPage = lazy(() => import("../../pages/RecipeViewPage/RecipeViewPage.jsx"));
+const AddRecipePage = lazy(() => import("../../pages/AddRecipePage/AddRecipePage.jsx"));
+const ProfilePage = lazy(() => import("../../pages/ProfilePage/ProfilePage.jsx"));
+const AuthPage = lazy(() => import("../../pages/AuthPage/AuthPage.jsx"));
 
 function App() {
   return (
     <Suspense fallback={null}>
       <Routes>
-        <Route path="/" element={<Layout />}>
+        <Route path='/' element={<Layout />}>
           <Route index element={<MainPage />} />
 
-          <Route path="recipes/:id" element={<RecipeViewPage />} />
+          <Route path='recipes/:id' element={<RecipeViewPage />} />
 
-          <Route path="auth/:authType" element={<AuthPage />} />
+          <Route path='auth/:authType' element={<AuthPage />} />
 
           <Route
-            path="add-recipe"
+            path='add-recipe'
             element={
               <PrivateRoute>
                 <AddRecipePage />
@@ -32,7 +33,7 @@ function App() {
           />
 
           <Route
-            path="profile/:recipeType"
+            path='profile/:recipeType'
             element={
               <PrivateRoute>
                 <ProfilePage />
@@ -41,7 +42,7 @@ function App() {
           />
 
           <Route
-            path="*"
+            path='*'
             element={
               <NotFound>
                 <p>Page not found</p>
