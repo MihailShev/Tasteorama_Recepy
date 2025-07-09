@@ -96,10 +96,9 @@ export default function AddRecipeForm({ categories, ingredients }) {
         formData.append("ingredients", JSON.stringify(values.ingredients));
       }
     }
-    console.log(values);
     try {
       const response = await api.post("/api/recipes", formData);
-      navigate(`/recipes/${response.data._id}`, { replace: true });
+      navigate(`/recipes/${response.data.data._id}`, { replace: true });
     } catch (error) {
       actions.resetForm();
       setPreview(null);
