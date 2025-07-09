@@ -95,7 +95,7 @@
     background-color: #f3f3f3;
 }
 
-/* Десктоп/планшетная версия */
+/*планшетная версия */
 @media screen and (min-width: 768px) {
     .modal {
         flex-direction: row;
@@ -116,7 +116,7 @@
         order: -1;
     }
 }
-
+/* Десктоп */
 @media screen and (min-width: 1440px) {
     .modal {
             background-color: white;
