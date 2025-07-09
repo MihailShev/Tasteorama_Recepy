@@ -3,6 +3,8 @@ import NotFound from "../../components/NotFound/NotFound.jsx";
 import RecipeDetails from "../../components/RecipeDetails/RecipeDetails.jsx";
 import { fetchIngridients, fetchRecipeById } from "../../request/request.js";
 import { useParams } from "react-router";
+import Loader from "../../components/Loader/Loader.jsx";
+import style from "./RecipeViewPage.module.css";
 
 export default function RecipeViewPage() {
   // const recipeId = "6462a8f74c3d0ddd28897fcd";
@@ -33,9 +35,9 @@ export default function RecipeViewPage() {
     getRecipe();
   }, [id, SetRecipe]);
   return (
-    <div className="container">
+    <div className='container'>
       {isLoading ? (
-        <p>Loading...</p>
+        <Loader className={style.loading} />
       ) : error ? (
         <NotFound>
           <p>Something went wrong</p>
