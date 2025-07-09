@@ -74,17 +74,9 @@ export const refresh = createAsyncThunk("auth/refresh", async (_, thunkAPI) => {
 });
 export const addFavorite = createAsyncThunk(
   "api/recipes/favorites",
-  async ({ recipeId, token }, thunkAPI) => {
+  async ({ recipeId }, thunkAPI) => {
     try {
-      const response = await api.post(
-        `/api/recipes/favorites/${recipeId}`,
-        null,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const response = await api.post(`/api/recipes/favorites/${recipeId}`);
       return response.data.data._id;
     } catch (err) {
       return thunkAPI.rejectWithValue(err.response?.data || err.message);
@@ -93,18 +85,9 @@ export const addFavorite = createAsyncThunk(
 );
 export const removeFavorite = createAsyncThunk(
   "api/recipes/removeFavorites",
-  async ({ recipeId, token }, thunkAPI) => {
+  async ({ recipeId }, thunkAPI) => {
     try {
-      const url = `https://recepy-api.onrender.com/api/recipes/favorites/${recipeId}`;
-      const response = await api.delete(
-        `/api/recipes/favorites/${recipeId}`,
-        url,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const response = await api.delete(`/api/recipes/favorites/${recipeId}`);
       return response.data.data.recipeId;
     } catch (err) {
       return thunkAPI.rejectWithValue(err.response?.data || err.message);
