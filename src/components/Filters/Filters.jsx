@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { useMediaQuery } from 'react-responsive';
 import { useState } from 'react';
-import { selectSelectedCategory, selectSelectedIngredient } from '../../redux/filters/selectors';
+import { selectSelectedCategory, selectSelectedIngredient, selectSelectedQuery } from '../../redux/filters/selectors';
 import { setSelectedCategory, setSelectedIngredient, resetSelectedFilters} from '../../redux/filters/slice'
 import css from './Filters.module.css';
 import Dropdown from '../DropDown/DropDown';
@@ -19,7 +19,7 @@ export default function Filters({categories, ingredients}) {
   const [isFilterOpen, setisFilterOpen] = useState(false);
   const totalRecipes = useSelector(selectTotalRecipes);
   const dispatch = useDispatch();
-
+  const title = useSelector(selectSelectedQuery);
   const selectedCategory = useSelector(selectSelectedCategory);
   const selectedIngredient = useSelector(selectSelectedIngredient);
 
@@ -41,7 +41,7 @@ export default function Filters({categories, ingredients}) {
 
   return (
     <div className={css.filtersSection}>
-      <h2 className={css.title}>Recipes</h2>
+      {title? (<h2 className={css.title}>Search Results for “{title}”</h2>) : (<h2 className={css.title}>Recipes</h2>)}
 
       <div className={css.resultRow}>
       {recipesAreLoading ? (
