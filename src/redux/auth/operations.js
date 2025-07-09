@@ -61,9 +61,7 @@ export const refresh = createAsyncThunk("auth/refresh", async (_, thunkAPI) => {
     const { accessToken } = response.data.data;
 
     localStorage.setItem("accessToken", accessToken);
-    const user = JSON.parse(localStorage.getItem("user"));
     return {
-      user,
       token: accessToken,
     };
   } catch (error) {
