@@ -45,13 +45,14 @@ export default function RecipeDetails({
   async function onAdd(recipe) {
     try {
       SetIsLoading(true);
-      await dispatch(addFavorite({ recipeId: recipe._id, token }));
+      await dispatch(addFavorite({ recipeId: recipe._id, token })).unwrap();
       toast.success("Recipe successfully added to favorites");
     } catch (error) {
-      if (error?.response?.status === "409") {
+      if (error?.status === 409) {
         toast.error("Recipe has already been added");
+      } else {
+        toast.error("Failed to add recipes to favorites");
       }
-      toast.error("Failed to add recipes to favorites");
     } finally {
       SetIsLoading(false);
     }
@@ -60,13 +61,14 @@ export default function RecipeDetails({
   async function onDelete(recipe) {
     try {
       SetIsLoading(true);
-      await dispatch(removeFavorite({ recipeId: recipe._id, token }));
+      await dispatch(removeFavorite({ recipeId: recipe._id, token })).unwrap;
       toast.success("Recipe successfully removed from favorites");
     } catch (error) {
-      if (error?.response?.status === "409") {
+      if (error?.status === 409) {
         toast.error("Recipe has already been deleted");
+      } else {
+        toast.error("Failed to remove recipes from favorites");
       }
-      toast.error("Failed to remove recipes from favorites");
     } finally {
       SetIsLoading(false);
     }
@@ -202,9 +204,9 @@ export default function RecipeDetails({
         </div>
       )}
 
-      {showSaveModal && (
+      {/* {showSaveModal && (
         <SaveRecipeNotAuthorized onClose={() => setShowSaveModal(false)} />
-      )}
+      )} */}
     </>
   );
 }
