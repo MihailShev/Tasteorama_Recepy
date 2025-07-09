@@ -1,22 +1,26 @@
 import { useDispatch, useSelector } from "react-redux";
-import { Link, useNavigate, useLocation} from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { logOut } from "../../redux/auth/operations.js";
 import css from "./Header.module.css";
 import logo from "/logo/vite.svg";
+import LogoutModal from "./LogoutModal.jsx";
 
 export default function Header() {
   const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
   const user = useSelector((state) => state.auth.user);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [menuOpen, setMenuOpen] = useState(false);
   const location = useLocation();
+
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [showLogoutModal, setShowLogoutModal] = useState(false);
 
   const handleLogout = async () => {
     await dispatch(logOut());
     navigate("/");
     setMenuOpen(false);
+    setShowLogoutModal(false);
   };
 
   const toggleMenu = () => setMenuOpen(!menuOpen);
@@ -63,12 +67,12 @@ export default function Header() {
           </button>
 
           <Link
-  to="/"
-  className={`${css.link} ${location.pathname === "/" ? css.active : ""}`}
-  onClick={handleLinkClick}
->
-  Recipes
-</Link>
+            to="/"
+            className={`${css.link} ${location.pathname === "/" ? css.active : ""}`}
+            onClick={handleLinkClick}
+          >
+            Recipes
+          </Link>
 
           {isLoggedIn ? (
             <>
@@ -91,7 +95,10 @@ export default function Header() {
                 <div className={css.avatar}>{user.name?.[0]}</div>
                 <span className={css.userName}>{user.name}</span>
                 <button
-                  onClick={handleLogout}
+                 onClick={() => {
+                  setMenuOpen(false);
+                  setShowLogoutModal(true);
+                }}                
                   className={css.logoutIcon}
                   title="Logout"
                 >
@@ -104,12 +111,12 @@ export default function Header() {
           ) : (
             <>
               <Link
-  to="/auth/login"
-  className={`${css.link} ${location.pathname === "/auth/login" ? css.active : ""}`}
-  onClick={handleLinkClick}
->
-  Log in
-</Link>
+                to="/auth/login"
+                className={`${css.link} ${location.pathname === "/auth/login" ? css.active : ""}`}
+                onClick={handleLinkClick}
+              >
+                Log in
+              </Link>
               <Link
                 to="/auth/register"
                 className={css.registerBtn}
@@ -120,6 +127,14 @@ export default function Header() {
             </>
           )}
         </nav>
+
+        {/* Модалка выхода */}
+        {showLogoutModal && (
+          <LogoutModal
+            onClose={() => setShowLogoutModal(false)}
+            onLogout={handleLogout}
+          />
+        )}
       </div>
     </header>
   );
