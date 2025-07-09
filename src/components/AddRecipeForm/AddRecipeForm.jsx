@@ -84,15 +84,30 @@ export default function AddRecipeForm({ categories, ingredients }) {
         formData.append("ingredients", JSON.stringify(values.ingredients));
       }
     }
+    const toastId = toast.loading("Publishing…");
     try {
       const response = await api.post("/api/recipes", formData);
-      toast.success("✅ Recipe created successfully!");
+      toast.update(toastId, {
+        render: "Recipe has been published!✅",
+        type: "success",
+        isLoading: false, // отключает спиннер
+        autoClose: 3000,
+        closeOnClick: true,
+      });
+
       setSubmitStatus("success");
 
       setTimeout(() => setSubmitStatus(""), 3000);
       navigate(`/recipes/${response.data.data._id}`, { replace: true });
     } catch (error) {
-      toast.error("❌ Failed to create recipe.");
+      toast.update(toastId, {
+        render: `❌ Failed to create recipe.`,
+        type: "error",
+        isLoading: false,
+        autoClose: 5000,
+        closeOnClick: true,
+      });
+
       setSubmitStatus("error");
 
       setTimeout(() => setSubmitStatus(""), 3000);
