@@ -35,23 +35,24 @@ export default function RecipeViewPage() {
     getRecipe();
   }, [id, SetRecipe]);
   return (
-    <div className='container'>
-      {isLoading ? (
-        <Loader className={style.loading} />
-      ) : error ? (
-        <NotFound>
-          <p>Something went wrong</p>
-        </NotFound>
-      ) : !recipe ? (
-        <NotFound>
-          <p>Recipe not found</p>
-        </NotFound>
-      ) : (
-        <RecipeDetails
-          recipe={recipe}
-          // ingredientsList={ingredients}
-        />
-      )}
-    </div>
+    <>
+      {isLoading && <Loader />}
+      <div className="container">
+        {error ? (
+          <NotFound>
+            <p>Something went wrong</p>
+          </NotFound>
+        ) : !recipe ? (
+          <NotFound>
+            <p>Recipe not found</p>
+          </NotFound>
+        ) : (
+          <RecipeDetails
+            recipe={recipe}
+            // ingredientsList={ingredients}
+          />
+        )}
+      </div>
+    </>
   );
 }
