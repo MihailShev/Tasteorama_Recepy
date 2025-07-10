@@ -8,8 +8,9 @@
   align-items: center;
 }
 .logo {
-  stroke: #000;
+  /* stroke: #000; */
   margin-left: 50px;
+  /* fill: black; */
 }
 .name {
   margin-bottom: 60px;
@@ -25,6 +26,7 @@
 .title {
   font-weight: 900;
   font-size: 50px;
+  letter-spacing: -0.03em;
   margin-bottom: 20px;
 }
 .timer {

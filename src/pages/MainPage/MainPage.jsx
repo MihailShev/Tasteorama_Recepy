@@ -30,8 +30,7 @@ import {
   setSelectedQuery,
 } from "../../redux/filters/slice.js";
 import Filters from "../../components/Filters/Filters.jsx";
-import Loader from "../../components/Loader/Loader.jsx";
-
+import Loader3 from "../../components/Loader/Loader3.jsx";
 
 export default function MainPage() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -71,7 +70,6 @@ export default function MainPage() {
       })
     );
 
-
     setTimeout(() => {
       didInit.current = true;
     }, 0);
@@ -87,19 +85,18 @@ export default function MainPage() {
     setSearchParams(params);
   }, [category, ingredient, title, setSearchParams]);
 
-  const handleLoadMore =  () => {
-
+  const handleLoadMore = () => {
     if (!recipesIsLoading && hasNextPage) {
-       dispatch(fetchRecipes({
-        category: category,
-        ingredient: ingredient,
-        title: title,
-        page: currentPage + 1,
-      }));
-
+      dispatch(
+        fetchRecipes({
+          category: category,
+          ingredient: ingredient,
+          title: title,
+          page: currentPage + 1,
+        })
+      );
     }
-
-  }
+  };
   return (
     <>
       <SearchBox />
@@ -109,8 +106,11 @@ export default function MainPage() {
           ingredients={filtersIngredients}
         />
         <RecipesList recipes={recipes} />
-        {recipesIsLoading && <Loader color={'#3a2016'}/>}
-       {hasNextPage && <LoadMoreBtn onLoad={handleLoadMore}/>}
+        {recipesIsLoading ? (
+          <Loader3 />
+        ) : (
+          hasNextPage && <LoadMoreBtn onLoad={handleLoadMore} />
+        )}
       </div>
     </>
   );

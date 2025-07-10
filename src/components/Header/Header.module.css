@@ -1,9 +1,9 @@
 .header {
-  background-color: #3a2016;
+  background-color: #3d2218;
   color: white;
   padding: 12px 0;
   position: relative;
-  z-index: 100;
+  z-index: 9999;
 }
 
 .inner {
@@ -62,7 +62,7 @@
   left: 0;
   width: 100%;
   height: 100vh;
-  background-color: #3a2016;
+  background-color: #3d2218;
   padding: 2rem 1.5rem;
   gap: 2rem;
   z-index: 1000;
@@ -106,7 +106,7 @@
 /* Register & Add Recipe button */
 .registerBtn,
 .addBtn {
-  background-color: #c38e5b;
+  background-color: #9b6c43;
   color: white;
   padding: 0.75rem 1.5rem;
   border-radius: 12px;
@@ -134,7 +134,7 @@
 }
 
 .avatar {
-  background-color: #c38e5b;
+  background-color: #9b6c43;
   border-radius: 50%;
   width: 32px;
   height: 32px;
