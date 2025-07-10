@@ -1,5 +1,5 @@
 .searchBarSection {
-  background-image: url('../../../img/bg/desc/bg-desc.jpg');
+  background-image: url("../../../img/bg/desc/bg-desc.jpg");
   background-size: cover;
   background-position: center;
   height: 400px;
@@ -33,11 +33,13 @@
   width: 329px;
   height: 46px;
   padding: 12px;
+  border: 1px solid #d9d9d9;
+  border-radius: 8px;
 }
 
 .button {
   width: 329px;
-  background-color: #9B6C43;
+  background-color: #9b6c43;
   font-size: 16px;
   font-weight: 600;
   padding: 10px 20px;
@@ -45,6 +47,7 @@
   color: white;
   border-radius: 0 4px 4px 0;
   cursor: pointer;
+  border-radius: 8px;
 }
 
 /* Tablet styles */
