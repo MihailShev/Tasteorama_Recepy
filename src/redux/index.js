@@ -29,8 +29,7 @@ api.interceptors.response.use(
       original._retry = true;
       try {
         const response = await api.post("/api/auth/refresh");
-        const { accessToken } = response.data;
-        console.log(accessToken);
+        const { accessToken } = response.data.data;
         const user = JSON.parse(localStorage.getItem("user"));
         storeRef?.dispatch(setCredentials({ user, token: accessToken }));
         original.headers.Authorization = `Bearer ${accessToken}`;
