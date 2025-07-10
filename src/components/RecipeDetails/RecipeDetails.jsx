@@ -61,7 +61,7 @@ export default function RecipeDetails({
   async function onDelete(recipe) {
     try {
       SetIsLoading(true);
-      await dispatch(removeFavorite({ recipeId: recipe._id, token })).unwrap;
+      await dispatch(removeFavorite({ recipeId: recipe._id, token })).unwrap();
       toast.success("Recipe successfully removed from favorites");
     } catch (error) {
       if (error?.status === 409) {
