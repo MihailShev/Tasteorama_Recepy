@@ -33,6 +33,12 @@ export default function Dropdown({ options, value, onChange, placeholder }) {
       </button>
       {isOpen && (
         <ul className={css.menu}>
+            <li
+              className={css.item}
+              onClick={() => handleSelect('')}
+            >
+              {placeholder}
+            </li>
           {options.map((option) => (
             <li
               key={option._id}
